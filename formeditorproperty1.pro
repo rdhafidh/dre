@@ -8,7 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 CONFIG +=  BUILD_GRAPHICSVIEW silent
-TARGET = formeditorproperty1
+TARGET = dre
 TEMPLATE = app
 CONFIG +=console  
 INCLUDEPATH += baseview items delegates delegates/propertyeditor
