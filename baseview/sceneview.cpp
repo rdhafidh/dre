@@ -67,6 +67,8 @@ BaseAllItems *SceneView::createImageitem(const QPointF &topleft,
 
 BaseAllItems *SceneView::createShapeRectangleitem(const QPointF &topleft,
                                                   const QSizeF &size) {
+  Q_UNUSED(topleft)
+  Q_UNUSED(size)
   return nullptr;
 }
 

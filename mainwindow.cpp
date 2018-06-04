@@ -176,6 +176,7 @@ void MainWindow::UnregisterHandlerUndoRedoConnection(FormDesign *from)
 //            [this](const QString & e){
 //        this->act_undo->setText (e);
 //    });
+	Q_UNUSED(from)
 }
 
 void MainWindow::createNewTabEditor() {
