@@ -7,7 +7,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-CONFIG +=  BUILD_GRAPHICSVIEW silent
+CONFIG +=    silent
 TARGET = dre
 TEMPLATE = app
 CONFIG +=console  

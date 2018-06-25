@@ -18,10 +18,8 @@ struct ItemShapeChangeValue {
 };
 ItemShapeChangeValue makeItemShapeChangeDecisionValue(
     const ItemShapeChangeDecision &decision,
-    QQuickItem::ItemChangeData *fromqml, const QVariant &fromgraphicsitem);
-#ifdef BUILD_GRAPHICSVIEW
-class BaseAllItems;
-#endif
+    QQuickItem::ItemChangeData *fromqml, const QVariant &fromgraphicsitem); 
+class BaseAllItems; 
 class  ItemShapeBase : public QObject {
   Q_OBJECT
     Q_PROPERTY(BorderLineFlags borderLine READ borderLineFlags WRITE
@@ -29,10 +27,8 @@ class  ItemShapeBase : public QObject {
     Q_PROPERTY(qreal borderLineWidth READ borderLineWidth WRITE setBorderLineWidth DESIGNABLE true  )
     Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor )
     Q_PROPERTY(bool visibleItem READ visibleItem WRITE setVisibleItem ) 
- public:
-#ifdef BUILD_GRAPHICSVIEW
-    friend class BaseAllItems;
-#endif
+ public: 
+    friend class BaseAllItems; 
   explicit ItemShapeBase(QObject *parent = 0);
   ~ItemShapeBase();
     enum BorderLineTypeFlag {
@@ -78,12 +74,8 @@ Q_SIGNALS:
   /*
    * ketika paint
    * */
-  virtual void paintShape(QPainter *painter) ; 
-#ifdef BUILD_GRAPHICSVIEW
+  virtual void paintShape(QPainter *painter) ;  
   virtual void createContextMenu(QGraphicsSceneContextMenuEvent *event) ;
-#else
-  virtual void createContextMenu()=0;
-#endif
   
  private: 
   void drawSingleItemBorder(QPainter *painter);
