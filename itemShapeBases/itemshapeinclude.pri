@@ -25,5 +25,4 @@ SOURCES += \
         $$BASEDIR/itemshapebase.cpp
 
 HEADERS += \
-         $$BASEDIR/itemshapebase.h \
-         $$BASEDIR/itemshapebase_global.h 
+         $$BASEDIR/itemshapebase.h 

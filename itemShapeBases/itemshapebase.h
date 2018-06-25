@@ -1,8 +1,7 @@
 #ifndef ITEMSHAPEBASE_H
 #define ITEMSHAPEBASE_H
 #include <QObject>
-#include <QPainter>
-#include "itemshapebase_global.h"
+#include <QPainter> 
 #include <constvalue.h>
 namespace QQuickItem {
 class ItemChangeData;
@@ -23,7 +22,7 @@ ItemShapeChangeValue makeItemShapeChangeDecisionValue(
 #ifdef BUILD_GRAPHICSVIEW
 class BaseAllItems;
 #endif
-class ITEMSHAPEBASESHARED_EXPORT ItemShapeBase : public QObject {
+class  ItemShapeBase : public QObject {
   Q_OBJECT
     Q_PROPERTY(BorderLineFlags borderLine READ borderLineFlags WRITE
                    setBorderLineFlags DESIGNABLE true SCRIPTABLE true)
