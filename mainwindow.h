@@ -1,10 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <manystructuiobjectparam.h>
 #include <QList>
 #include <QMainWindow>
 #include <QPair>
-#include <manystructuiobjectparam.h>
 
 namespace Ui {
 class MainWindow;
@@ -12,9 +12,9 @@ class MainWindow;
 class SceneView;
 class FormDesign;
 class QAction;
-struct HelperTabSwitch{
-    FormDesign *design;
-    int tabidx;
+struct HelperTabSwitch {
+  FormDesign *design;
+  int tabidx;
 };
 
 class MainWindow : public QMainWindow {
@@ -24,28 +24,27 @@ class MainWindow : public QMainWindow {
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
 
-public Q_SLOTS:  
-    void createNewTabEditor();
-    
+ public Q_SLOTS:
+  void createNewTabEditor();
+
  private Q_SLOTS:
-  void on_actionAdd_teks_triggered();
 
-  void on_actionHapus_Semua_triggered();
+  void on_actionTutup_Aplikasi_triggered();
 
-  void on_actionAdd_qt_teks_triggered();
+  void on_actionTambah_teks_triggered();
 
-  void on_actionAdd_pure_obyek_teks_triggered();
- 
-  void on_actionAdd_custom_image_item_triggered();
-   
-private:   
-  void RegisterHandlerUndoRedoConnection(FormDesign *from);
-  void UnregisterHandlerUndoRedoConnection(FormDesign *from);
-  
-  Ui::MainWindow *ui; 
+  void on_actionTambah_Gambar_triggered();
+
+ private:
+  void privAddSampleText();
+  void privAddSampleImage();
+  void privHapusSemuaItem();
+  void privExit();
+
+  Ui::MainWindow *ui;
   QAction *act_undo;
   QAction *act_redo;
-  QList<HelperTabSwitch *> daftarform; 
+  QList<HelperTabSwitch *> daftarform;
   FormDesign *m_maybeOldTabwidget;
 };
 

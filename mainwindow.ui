@@ -40,17 +40,26 @@
      <x>0</x>
      <y>0</y>
      <width>763</width>
-     <height>18</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionAdd_teks"/>
-    <addaction name="actionAdd_qt_teks"/>
-    <addaction name="actionAdd_pure_obyek_teks"/>
-    <addaction name="actionAdd_custom_image_item"/>
+    <widget class="QMenu" name="menuTutup_Lembar">
+     <property name="title">
+      <string>Tutup Lembar</string>
+     </property>
+     <addaction name="actionTutupLembar_Aktif"/>
+     <addaction name="actionTutupSemua_Lembar"/>
+    </widget>
+    <addaction name="actionHalaman_Baru"/>
+    <addaction name="actionBuka_lembar"/>
+    <addaction name="menuTutup_Lembar"/>
+    <addaction name="actionPrintPreview"/>
+    <addaction name="actionPengaturan"/>
+    <addaction name="actionTutup_Aplikasi"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
     <property name="title">
@@ -59,15 +68,23 @@
     <addaction name="actionDelete"/>
     <addaction name="actionKopi"/>
     <addaction name="actionPaste"/>
-    <addaction name="actionHapus_Semua"/>
+   </widget>
+   <widget class="QMenu" name="menuItem">
+    <property name="title">
+     <string>Item</string>
+    </property>
+    <addaction name="actionTambah_teks"/>
+    <addaction name="actionTambah_Gambar"/>
+    <addaction name="actionTambah_Shape"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
+   <addaction name="menuItem"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionAdd_teks">
+  <action name="actionPaste">
    <property name="text">
-    <string>add teks</string>
+    <string>Paste</string>
    </property>
   </action>
   <action name="actionDelete">
@@ -80,29 +97,54 @@
     <string>Kopi</string>
    </property>
   </action>
-  <action name="actionPaste">
+  <action name="actionHalaman_Baru">
    <property name="text">
-    <string>Paste</string>
+    <string>Lembar Baru</string>
    </property>
   </action>
-  <action name="actionHapus_Semua">
+  <action name="actionBuka_lembar">
    <property name="text">
-    <string>Hapus Semua</string>
+    <string>Buka lembar</string>
    </property>
   </action>
-  <action name="actionAdd_qt_teks">
+  <action name="actionTutupLembar_Aktif">
    <property name="text">
-    <string>add qt teks</string>
+    <string>Lembar Aktif</string>
    </property>
   </action>
-  <action name="actionAdd_pure_obyek_teks">
+  <action name="actionTutupSemua_Lembar">
    <property name="text">
-    <string>add pure obyek teks</string>
+    <string>Semua Lembar</string>
    </property>
   </action>
-  <action name="actionAdd_custom_image_item">
+  <action name="actionPrintPreview">
    <property name="text">
-    <string>add custom image item</string>
+    <string>Print Preview</string>
+   </property>
+  </action>
+  <action name="actionPengaturan">
+   <property name="text">
+    <string>Pengaturan</string>
+   </property>
+  </action>
+  <action name="actionTutup_Aplikasi">
+   <property name="text">
+    <string>Tutup Aplikasi</string>
+   </property>
+  </action>
+  <action name="actionTambah_teks">
+   <property name="text">
+    <string>Tambah teks</string>
+   </property>
+  </action>
+  <action name="actionTambah_Gambar">
+   <property name="text">
+    <string>Tambah Gambar</string>
+   </property>
+  </action>
+  <action name="actionTambah_Shape">
+   <property name="text">
+    <string>Tambah Shape</string>
    </property>
   </action>
  </widget>
