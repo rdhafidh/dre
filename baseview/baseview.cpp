@@ -18,7 +18,9 @@ void Baseview::scaleView(qreal scaleFactor) {
                      .scale(scaleFactor, scaleFactor)
                      .mapRect(QRectF(0, 0, 1, 1))
                      .width(); 
-  if (factor < 0.30 || factor > 4 ) return;
+  if (factor < 0.30 || factor > 1.3 ) return;
+  
+  qDebug()<<"current factor"<<factor;
   scale(scaleFactor, scaleFactor);
 
   emit scaled(scaleFactor);
