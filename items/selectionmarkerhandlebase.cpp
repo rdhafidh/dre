@@ -3,7 +3,7 @@
 #include <QCursor>
 #include <baseallitems.h> 
 #include <sceneview.h>
-#include <lineitem.h>
+#include <QGraphicsLineItem>
 #include <QDebug>
 
 SelectionMarkerHandleBase::SelectionMarkerHandleBase(QGraphicsItem *parent)

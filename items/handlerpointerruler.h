@@ -15,7 +15,7 @@ enum class PointerModeRulerOfItem{
     POINTER_MODE_LEFT
 };
 class BaseAllItems;
-class LineItem;
+class QGraphicsLineItem;
 
 class HandlerPointerRuler
 {
@@ -23,7 +23,7 @@ public:
     HandlerPointerRuler(const PointerModeRulerOfItem &mode,BaseAllItems *fromParent);
     ~HandlerPointerRuler();
     void updateCentralPos(const QPointF &pos);
-    LineItem *singleLineItem();
+    QGraphicsLineItem *singleLineItem();
     
 private:
     void buildSingleLine(BaseAllItems *fromParent); 
@@ -32,7 +32,7 @@ private:
     void updatePosCentralBawah(const QPointF&p);
     void updatePosCentralKanan(const QPointF &p);
     
-    LineItem *m_single_line;
+    QGraphicsLineItem *m_single_line;
     PointerModeRulerOfItem m_mode;
 };
 

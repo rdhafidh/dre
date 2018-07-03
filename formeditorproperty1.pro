@@ -41,7 +41,6 @@ SOURCES += main.cpp\
     formdesign.cpp \
     tabwidgetutama.cpp \
     items/ruleritem.cpp \
-    items/lineitem.cpp \
     items/handlerpointerruler.cpp
 
 HEADERS  += mainwindow.h \
@@ -59,7 +58,6 @@ HEADERS  += mainwindow.h \
     baseview/undocommand.h \
     formdesign.h \
     items/ruleritem.h \
-    items/lineitem.h \
     items/handlerpointerruler.h
 
 FORMS    += mainwindow.ui \
