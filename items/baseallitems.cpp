@@ -201,6 +201,9 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     posBottom = round(posBottom / gridsize) * gridsize;
 
     localrect.setBottom(posBottom);
+    QPointF poshint( localrect.left() + event->pos().x() - event->lastPos().x(),posBottom);
+    smpsb->updatePointerModeRuleOfItemLinePos ( poshint);
+    
     updateHandlePos();
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),

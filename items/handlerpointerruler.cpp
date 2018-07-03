@@ -10,10 +10,8 @@ HandlerPointerRuler::HandlerPointerRuler(const PointerModeRulerOfItem &mode,
   m_mode = mode;
   switch (m_mode) {
     case PointerModeRulerOfItem::POINTER_MODE_BOTTOM:
-    case PointerModeRulerOfItem::POINTER_MODE_LEFT:
-    case PointerModeRulerOfItem::POINTER_MODE_RIGHT:
     case PointerModeRulerOfItem::POINTER_MODE_TOP:
-      this->buildSingleLine(fromParent);
+      this->buildSingleLineHor(fromParent);
       break;
   }
 }
@@ -54,7 +52,7 @@ QGraphicsLineItem *HandlerPointerRuler::singleLineItem() {
   return m_single_line;
 }
 
-void HandlerPointerRuler::buildSingleLine(BaseAllItems *fromParent) {
+void HandlerPointerRuler::buildSingleLineHor(BaseAllItems *fromParent) {
   SceneView *scn = qobject_cast<SceneView *>(fromParent->scene());
   if (scn) {
     m_single_line = new QGraphicsLineItem(fromParent);
@@ -62,13 +60,28 @@ void HandlerPointerRuler::buildSingleLine(BaseAllItems *fromParent) {
     pen.setWidthF(2.0);
     pen.setColor(QColor("blue"));
     m_single_line->setPen(pen);
-    QPointF left(-scn->width (),
-                 fromParent->rect().y());
-    QPointF right(scn->pageItemDesign()->getRect().right(),
-                  fromParent->rect().y());
-    m_single_line->setLine(QLineF(left, right));
+    QPointF left;
+    QPointF right;
+    switch (m_mode) {
+    case PointerModeRulerOfItem::POINTER_MODE_TOP:
+        left.setX (-scn->width ());
+        left.setY (fromParent->rect().y());
+        right.setX (scn->pageItemDesign()->getRect().right());
+        right.setY (fromParent->rect().y());
+        m_single_line->setLine(QLineF(left, right));
+        break;
+    case PointerModeRulerOfItem::POINTER_MODE_BOTTOM:
+        left.setX (-scn->width ());
+        left.setY (fromParent->rect().bottom ());
+        right.setX (scn->pageItemDesign()->getRect().right());
+        right.setY (fromParent->rect().bottom ());
+        m_single_line->setLine(QLineF(left, right));
+        break;
+    default:
+        break;
+    } 
   }
-}
+} 
 
 void HandlerPointerRuler::updatePosCentralAtas(const QPointF &p) { 
   if (m_single_line) {
@@ -85,6 +98,8 @@ void HandlerPointerRuler::updatePosCentralAtas(const QPointF &p) {
 
 void HandlerPointerRuler::updatePosCentralKiri(const QPointF &p) {}
 
-void HandlerPointerRuler::updatePosCentralBawah(const QPointF &p) {}
+void HandlerPointerRuler::updatePosCentralBawah(const QPointF &p) {
+  updatePosCentralAtas(p);
+}
 
 void HandlerPointerRuler::updatePosCentralKanan(const QPointF &p) {}
