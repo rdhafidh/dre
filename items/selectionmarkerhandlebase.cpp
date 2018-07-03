@@ -1,16 +1,37 @@
 #include "selectionmarkerhandlebase.h" 
 #include <QPainter> 
 #include <QCursor>
-#include <baseallitems.h>
+#include <baseallitems.h> 
+#include <sceneview.h>
+#include <lineitem.h>
+#include <QDebug>
 
 SelectionMarkerHandleBase::SelectionMarkerHandleBase(QGraphicsItem *parent)
     : QGraphicsItem(parent) {
     setAcceptHoverEvents (true);  
     moderesize=false;
+    m_hpr.reset (nullptr);
+    m_mode_pointer_ruler=PointerModeRulerOfItem::POINTER_MODE_IS_UNDEFINED;
     setOpacity (0.5);
+    QObject::connect(&m_show_pointer_timer,&QTimer::timeout,[this](){
+        if(this->parentItem ()){
+            BaseAllItems *cik =qgraphicsitem_cast<BaseAllItems*>(parentItem());
+            if(cik){
+                   SceneView *scn=qobject_cast<SceneView *>(cik->scene());
+                   if(scn && m_hpr.get () !=nullptr && m_hpr->singleLineItem ()){
+                       scn->removeItem (m_hpr->singleLineItem ());
+                       m_hpr.reset (nullptr);
+                   }
+            }
+        }
+    });
 }
 
-SelectionMarkerHandleBase::~SelectionMarkerHandleBase() {}
+SelectionMarkerHandleBase::~SelectionMarkerHandleBase() {
+    if(m_show_pointer_timer.isActive ()){
+        m_show_pointer_timer.stop ();
+    }
+}
 
 void SelectionMarkerHandleBase::setItemHandlePosType(HandlePosType type)
 {
@@ -58,6 +79,18 @@ QRectF SelectionMarkerHandleBase::rect() const
     return m_rect;
 }
 
+void SelectionMarkerHandleBase::setPointerModeRulerOfItemType(const PointerModeRulerOfItem &ty)
+{
+    m_mode_pointer_ruler=ty;
+}
+
+void SelectionMarkerHandleBase::updatePointerModeRuleOfItemLinePos(const QPointF &pos)
+{
+    if(m_hpr.get ()!=nullptr){
+        m_hpr->updateCentralPos (pos);
+    }
+}
+
 void SelectionMarkerHandleBase::paint(QPainter *painter,
                                       const QStyleOptionGraphicsItem *option,
                                       QWidget *widget) {
@@ -86,8 +119,10 @@ void SelectionMarkerHandleBase::mousePressEvent(
   if (parentItem()) {
       BaseAllItems *cik =qgraphicsitem_cast<BaseAllItems*>(parentItem());
       if(cik){
+          qDebug()<<Q_FUNC_INFO<<"called";
           cik->mousePressEvent (event);
       }
+      handlePointerRulerFromCursorType(m_mode_pointer_ruler);
   }
   QGraphicsItem::mousePressEvent(event);
 }
@@ -135,6 +170,7 @@ void SelectionMarkerHandleBase::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *
     if (parentItem()) { 
         BaseAllItems *cik =qgraphicsitem_cast<BaseAllItems*>(parentItem());
         if(cik){
+            qDebug()<<Q_FUNC_INFO<<"called";
             cik->mouseDoubleClickEvent (event);
         }
     }
@@ -151,4 +187,13 @@ QPainterPath SelectionMarkerHandleBase::shape() const
     QPainterPath path;
     path.addRect (m_rect);
     return path;
+}
+
+void SelectionMarkerHandleBase::handlePointerRulerFromCursorType(const PointerModeRulerOfItem &cursor)
+{ 
+    if(m_show_pointer_timer.isActive ()){
+        m_show_pointer_timer.stop ();
+    } 
+    m_hpr.reset (new HandlerPointerRuler(cursor,qgraphicsitem_cast<BaseAllItems*>(parentItem())));
+    m_show_pointer_timer.start (4000);
 }

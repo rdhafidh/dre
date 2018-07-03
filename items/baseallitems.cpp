@@ -2,17 +2,18 @@
 #include <pageitem.h>
 #include <sceneview.h>
 #include <undocommand.h>
+#include <QApplication>
 #include <QDebug>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QMetaObject>
 #include <QMetaProperty>
 #include "selectionmarkerhandlebase.h"
-#include <QApplication>
 
 BaseAllItems::BaseAllItems(QGraphicsItem *parent)
     : QGraphicsItem(parent),
-      ItemShapeBase(),m_itemIsRemoved(false),
+      ItemShapeBase(),
+      m_itemIsRemoved(false),
       smpat(nullptr),
       smpsk(nullptr),
       smpsb(nullptr),
@@ -30,8 +31,10 @@ BaseAllItems::BaseAllItems(QGraphicsItem *parent)
     this->updateHandlePos();
     this->update(this->geometry());
   });
-  connect(this, &BaseAllItems::geometryChanged,
-          [this](const QRectF &geom) {    this->updateHandlePos(); this->update(geom); });
+  connect(this, &BaseAllItems::geometryChanged, [this](const QRectF &geom) {
+    this->updateHandlePos();
+    this->update(geom);
+  });
 }
 
 BaseAllItems::~BaseAllItems() {}
@@ -59,23 +62,16 @@ qreal BaseAllItems::rotasi() const { return m_rotasi; }
 void BaseAllItems::setRotasi(qreal n) {
   if (m_rotasi == n) return;
 
-  setTransformOriginPoint (localrect.width ()/2,
-                           localrect.height ()/2);
-  setRotation(m_rotasi); 
+  setTransformOriginPoint(localrect.width() / 2, localrect.height() / 2);
+  setRotation(m_rotasi);
   m_rotasi = n;
   updateHandlePos();
   update();
 }
 
-void BaseAllItems::setItemIsRemoved(bool e)
-{
-    m_itemIsRemoved=e;
-}
+void BaseAllItems::setItemIsRemoved(bool e) { m_itemIsRemoved = e; }
 
-bool BaseAllItems::itemIsRemoved() const
-{
-    return m_itemIsRemoved;
-}
+bool BaseAllItems::itemIsRemoved() const { return m_itemIsRemoved; }
 
 void BaseAllItems::dumpPropertiInfo() {
   const QMetaObject *metaObject = this->metaObject();
@@ -148,16 +144,18 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
                << localrect.top() << "posTopCorner" << posTopCorner << "bottom"
                << localrect.bottom();
       return;
-    } 
-    
-    //disini cuman y sbg postopcorner
-    
+    }
+    // disini cuman y sbg postopcorner
+
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
     posTopCorner = round(posTopCorner / gridsize) * gridsize;
     localrect.setTop(posTopCorner);
-    updateHandlePos(); 
+    QPointF poshint( localrect.left() + event->pos().x() - event->lastPos().x(),posTopCorner);
+    smpat->updatePointerModeRuleOfItemLinePos ( poshint);
     
+    updateHandlePos();
+
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
                      localrect.height());
@@ -166,7 +164,6 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
              << "minheight" << (qreal)minheight << "posTopCorner"
              << posTopCorner;
 
-    
     this->rectChanged(localrect);
     update(localrect);
 
@@ -197,12 +194,12 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       qDebug() << "found localrect.bottom () " << localrect.bottom()
                << "posbotom" << posBottom;
       return;
-    } 
-    
+    }
+
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
-    posBottom = round(posBottom / gridsize) * gridsize; 
-    
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
+    posBottom = round(posBottom / gridsize) * gridsize;
+
     localrect.setBottom(posBottom);
     updateHandlePos();
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
@@ -236,9 +233,9 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       return;
     }
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
-    posLeft = round(posLeft / gridsize) * gridsize; 
-    
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
+    posLeft = round(posLeft / gridsize) * gridsize;
+
     localrect.setLeft(posLeft);
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -271,9 +268,9 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       return;
     }
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
-    posRight = round(posRight / gridsize) * gridsize; 
-    
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
+    posRight = round(posRight / gridsize) * gridsize;
+
     localrect.setRight(posRight);
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -301,9 +298,9 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       return;
     }
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
-    posBottom = round(posBottom / gridsize) * gridsize; 
-    
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
+    posBottom = round(posBottom / gridsize) * gridsize;
+
     localrect.setBottom(posBottom);
 
     // baru kanan
@@ -317,8 +314,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
                << localrect.right() << "posRight" << posRight << "left"
                << localrect.left();
       return;
-    } 
-    posRight = round(posRight / gridsize) * gridsize; 
+    }
+    posRight = round(posRight / gridsize) * gridsize;
     localrect.setRight(posRight);
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -348,8 +345,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       return;
     }
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
-    posTopCorner = round(posTopCorner / gridsize) * gridsize; 
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
+    posTopCorner = round(posTopCorner / gridsize) * gridsize;
     localrect.setTop(posTopCorner);
     // handle sisi kiri
     qreal minwidth_bag_kiri = smh_a_k->rect().width() * 2;
@@ -360,8 +357,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
                << "found localrect.left () " << localrect.left() << "posLeft"
                << posLeft << "right" << localrect.right();
       return;
-    } 
-    posLeft = round(posLeft / gridsize) * gridsize; 
+    }
+    posLeft = round(posLeft / gridsize) * gridsize;
     localrect.setLeft(posLeft);
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -390,8 +387,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       return;
     }
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
-    posTopCorner = round(posTopCorner / gridsize) * gridsize; 
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
+    posTopCorner = round(posTopCorner / gridsize) * gridsize;
     localrect.setTop(posTopCorner);
     // handle sisi kanan
     qreal minwidth_bag_kanan = smh_a_knn->rect().width() * 2;
@@ -403,8 +400,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
                << "found localrect.right () " << localrect.right() << "posRight"
                << posRight << "left" << localrect.left();
       return;
-    } 
-    posRight = round(posRight / gridsize) * gridsize; 
+    }
+    posRight = round(posRight / gridsize) * gridsize;
     localrect.setRight(posRight);
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -433,8 +430,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
       return;
     }
     int gridsize =
-        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize(); 
-    posBottom = round(posBottom / gridsize) * gridsize; 
+        qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
+    posBottom = round(posBottom / gridsize) * gridsize;
     localrect.setBottom(posBottom);
     // handle sisi kiri
     qreal minwidthhandlekiri = smpsk->rect().width() * 2;
@@ -446,7 +443,7 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
                << posLeft << "right" << localrect.right();
       return;
     }
-    posLeft = round(posLeft / gridsize) * gridsize; 
+    posLeft = round(posLeft / gridsize) * gridsize;
     localrect.setLeft(posLeft);
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -507,7 +504,8 @@ void BaseAllItems::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 
 void BaseAllItems::setModeOnOffSelection(bool b) {
   modeselect = b;
-  if (b && !smpat && !smpsk && !smpsb && !smpsknn && !smh_a_k) {
+  if (b && !smpat && !smpsk && !smpsb && !smpsknn && !smh_a_k 
+           &&  !smh_a_knn && !smh_b_knn && !smh_b_kr) {
     smpat = new SelectionMarkerHandleBase(this);
     smpat->setCursorType(Qt::SizeVerCursor);
     smpat->setForParentItemType(getItemType());
@@ -515,6 +513,7 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpat->setSelectionMarkerSize(markerSize);
     smpat->setBrushMarker(QBrush(Qt::green));
     smpat->setPos(0, 0);
+    smpat->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_TOP);
     smpat->setVisible(true);
 
     smpsk = new SelectionMarkerHandleBase(this);
@@ -524,6 +523,7 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpsk->setSelectionMarkerSize(markerSize);
     smpsk->setBrushMarker(QBrush(Qt::green));
     smpsk->setPos(0, 0);
+    smpsk->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_LEFT);
     smpsk->setVisible(true);
 
     smpsb = new SelectionMarkerHandleBase(this);
@@ -533,6 +533,7 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpsb->setBrushMarker(QBrush(Qt::green));
     updateHandlePos();
     smpsb->setPos(0, 0);
+    smpsb->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_BOTTOM);
     smpsb->setVisible(true);
 
     smpsknn = new SelectionMarkerHandleBase(this);
@@ -542,6 +543,7 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpsknn->setBrushMarker(QBrush(Qt::green));
     updateHandlePos();
     smpsknn->setPos(0, 0);
+    smpsknn->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_RIGHT);
     smpsknn->setVisible(true);
 
     smh_a_k = new SelectionMarkerHandleBase(this);
@@ -580,7 +582,7 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smh_b_kr->setPos(0, 0);
     smh_b_kr->setVisible(true);
   } else {
-    if (scene() && smpat && smpsk && smpsb /* blabla */) {
+    if (scene() && smpat && smpsk && smpsb && smpsknn && smh_a_k &&  smh_a_knn && smh_b_knn && smh_b_kr) {
       scene()->removeItem(smpat);
       delete smpat;
       smpat = nullptr;
