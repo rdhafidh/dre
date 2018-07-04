@@ -1,21 +1,22 @@
 #include "textitem.h"
 #include <QAbstractTextDocumentLayout>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
+#include <mainwindow.h>
+#include <sceneview.h>
+#include <undocommand.h>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QGraphicsSceneMouseEvent>
 #include <QMenu>
+#include <QMessageBox>
+#include <QMetaObject>
+#include <QMetaProperty>
 #include <QTextBlock>
 #include <QTextBlockFormat>
 #include <QTextCursor>
-#include <QMessageBox>
-#include <sceneview.h>
-#include <undocommand.h>
-#include <QMetaObject>
-#include <QMetaProperty>
-#include <mainwindow.h>
 
 TextItem::TextItem(QGraphicsItem *parent) : BaseAllItems(parent) {
-   
   setItemType(ItemConst::Tipe::TEKS);
   setTeks(
       tr("kata kunci kata kunci  kata kunci kata kunci kata kunci kata kunci "
@@ -86,12 +87,11 @@ void TextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 void TextItem::createContextMenu(QGraphicsSceneContextMenuEvent *event) {
   QMenu menu;
-  auto ondelete=[this](){ 
-      SceneView* scn=qobject_cast<SceneView*>(scene());
-      if(scn !=nullptr) {  
-          scn->undostack()->push (new 
-                                                            XCommands::DeleteItemCommand(this));  
-      }
+  auto ondelete = [this]() {
+    SceneView *scn = qobject_cast<SceneView *>(scene());
+    if (scn != nullptr) {
+      scn->undostack()->push(new XCommands::DeleteItemCommand(this));
+    }
   };
   QAction *cpAction = menu.addAction("Copy");
   QAction *pasteAction = menu.addAction("Paste");
@@ -101,20 +101,22 @@ void TextItem::createContextMenu(QGraphicsSceneContextMenuEvent *event) {
   if (selectedAction == cpAction) {
   } else if (selectedAction == pasteAction) {
   } else if (selectedAction == delAction) {
-      QMessageBox box;
-      box.setStandardButtons (QMessageBox::Yes|QMessageBox::No);
-      box.setText (tr("Apakah anda yakin akan menghapus item dengan nama obyek %1 ?").arg (objectName ()));
-      box.setDefaultButton (QMessageBox::No);
-      int ret=box.exec ();
-      switch (ret) {
+    QMessageBox box;
+    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    box.setText(
+        tr("Apakah anda yakin akan menghapus item dengan nama obyek %1 ?")
+            .arg(objectName()));
+    box.setDefaultButton(QMessageBox::No);
+    int ret = box.exec();
+    switch (ret) {
       case QMessageBox::Yes:
-          ondelete();
-          break;
+        ondelete();
+        break;
       default:
-          break;
-      }
-  }else if(selectedAction==dumpPropertiAction){
-      this->dumpPropertiInfo ();
+        break;
+    }
+  } else if (selectedAction == dumpPropertiAction) {
+    this->dumpPropertiInfo();
   }
 }
 

@@ -1,6 +1,8 @@
 #include "ruleritem.h"
 #include <QAction>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include <QFont>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
@@ -176,7 +178,9 @@ void RulerItem::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   auto act_dumpinfopos = menu.addAction(tr("dump info pos"));
   QAction *selectedAction = menu.exec(event->screenPos());
   if (selectedAction == act_dumpinfopos) {
+      #ifdef DEBUGGING_ENABLED
     qDebug() << "geom info "
              << "pos:" << pos() << "rect:" << m_rect;
+#endif
   }
 }

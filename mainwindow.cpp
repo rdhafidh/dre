@@ -7,7 +7,9 @@
 #include <tabwidgetutama.h>
 #include <textitem.h>
 #include <undocommand.h>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)

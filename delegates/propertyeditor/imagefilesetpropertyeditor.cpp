@@ -3,7 +3,9 @@
 
 #include <propertyedititemdelegate.h>
 #include <utiljsonstringproperty.h>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include <QFileDialog>
 #include <QImage>
 #include <QThread>
@@ -20,7 +22,9 @@ ImageFileSetPropertyEditor::ImageFileSetPropertyEditor(
 }
 
 ImageFileSetPropertyEditor::~ImageFileSetPropertyEditor() {
+#ifdef DEBUGGING_ENABLED
   qDebug() << QThread::currentThreadId() << Q_FUNC_INFO;
+#endif
   delete ui;
 }
 
@@ -30,7 +34,9 @@ void ImageFileSetPropertyEditor::askUpdateFilePath(const QByteArray &buffer) {
   auto up = choosenimg =
       UtilJsonStringProperty::extractPlainPathImage1FieldFromPropertyFormat(
           buffer);
+#ifdef DEBUGGING_ENABLED
   qDebug() << Q_FUNC_INFO << __LINE__;
+#endif
   ui->lineEdit_file_path->setText(up);
 }
 
@@ -56,9 +62,11 @@ void ImageFileSetPropertyEditor::openFileDialogImageDone(
     prepareRelease();
     return;
   }
+#ifdef DEBUGGING_ENABLED
   qDebug() << "choosen imagepath" << imagepath;
 
   qDebug() << QThread::currentThreadId() << Q_FUNC_INFO;
+#endif
   ui->lineEdit_file_path->setText(imagepath);
   prepareRelease();
 }
@@ -66,10 +74,10 @@ void ImageFileSetPropertyEditor::openFileDialogImageDone(
 void ImageFileSetPropertyEditor::on_toolButton_pilih_file_clicked() {
   if (lastdirimg.isEmpty()) {
     lastdirimg = ".";
-  } 
+  }
   auto mfile =
       QFileDialog::getOpenFileName(this, tr("Pilih Gambar"), lastdirimg,
-                                   tr("File Gambar (*.jpg *.jpeg *.png)")); 
+                                   tr("File Gambar (*.jpg *.jpeg *.png)"));
   this->openFileDialogImageDone(mfile);
 }
 

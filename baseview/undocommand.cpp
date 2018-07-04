@@ -2,7 +2,9 @@
 #include <imageitem.h>
 #include <sceneview.h>
 #include <textitem.h>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include <QGraphicsItem>
 #include <QStringList>
 #include <QVariantList>
@@ -49,10 +51,13 @@ int XCommands::MoveItemPosOnlyCommand::id() const {
       XCommands::TypeUndoCommandList::MOVE_POS_ONLY_COMMAND);
 }
 
-XCommands::InsertItemCommand::InsertItemCommand(SceneView *fromscene, const ItemConst::Tipe &type,
+XCommands::InsertItemCommand::InsertItemCommand(SceneView *fromscene,
+                                                const ItemConst::Tipe &type,
                                                 QUndoCommand *parent)
-    : QUndoCommand(parent), scene(fromscene)
-,m_tipeitem(type),newitem(nullptr){  
+    : QUndoCommand(parent),
+      scene(fromscene),
+      m_tipeitem(type),
+      newitem(nullptr) {
   switch (m_tipeitem) {
     case ItemConst::Tipe::BARCODE:
       setText(QObject::tr("Insert Barcode"));
@@ -83,31 +88,29 @@ XCommands::InsertItemCommand::InsertItemCommand(SceneView *fromscene, const Item
 }
 
 void XCommands::InsertItemCommand::undo() {
-  if (newitem != nullptr) { 
-    scene->removeKindsItem (newitem);
+  if (newitem != nullptr) {
+    scene->removeKindsItem(newitem);
   }
 }
 
 void XCommands::InsertItemCommand::redo() {
-  if (newitem==nullptr) {
-      switch (this->m_tipeitem) {
-        case ItemConst::Tipe::TEKS:
-          newitem = qobject_cast<SceneView *>(scene)->createTextitem(
-              QPointF(10,10),
-              QSizeF(100,200));
-          break;
-        case ItemConst::Tipe::GAMBAR:
-          newitem = qobject_cast<SceneView *>(scene)->createImageitem(
-              QPointF(10,10),
-              QSizeF(200,300));
-          break;
-        default:
-          break;
-      }
+  if (newitem == nullptr) {
+    switch (this->m_tipeitem) {
+      case ItemConst::Tipe::TEKS:
+        newitem = qobject_cast<SceneView *>(scene)->createTextitem(
+            QPointF(10, 10), QSizeF(100, 200));
+        break;
+      case ItemConst::Tipe::GAMBAR:
+        newitem = qobject_cast<SceneView *>(scene)->createImageitem(
+            QPointF(10, 10), QSizeF(200, 300));
+        break;
+      default:
+        break;
+    }
     return;
   }
-  if(newitem->itemIsRemoved ()){ 
-      scene->addKindsItem (newitem);
+  if (newitem->itemIsRemoved()) {
+    scene->addKindsItem(newitem);
   }
 }
 

@@ -1,10 +1,12 @@
 #include "customobyek.h"
 #include <QGraphicsSceneMouseEvent>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include <QAbstractTextDocumentLayout>
 
 CustomObyek::CustomObyek(QGraphicsItem *parent) : QGraphicsObject(parent) {
-    setFlags (QGraphicsObject::ItemIsMovable);
+  setFlags(QGraphicsObject::ItemIsMovable);
 }
 
 CustomObyek::~CustomObyek() {}
@@ -19,16 +21,12 @@ void CustomObyek::setRect(const QRectF &r) {
 
 QRectF CustomObyek::rect() const { return m_rect; }
 
-void CustomObyek::setTeks(const QString &t)
-{
-    doc.setHtml (t);
-    update();
+void CustomObyek::setTeks(const QString &t) {
+  doc.setHtml(t);
+  update();
 }
 
-QString CustomObyek::teks() const
-{
-    return doc.toHtml ();
-}
+QString CustomObyek::teks() const { return doc.toHtml(); }
 
 void CustomObyek::paint(QPainter *painter,
                         const QStyleOptionGraphicsItem *option,
@@ -40,8 +38,10 @@ void CustomObyek::paint(QPainter *painter,
 }
 
 void CustomObyek::mousePressEvent(QGraphicsSceneMouseEvent *e) {
+#ifdef DEBUGGING_ENABLED
   qDebug() << "mousePressEvent CustomObyek  ";
-  QGraphicsObject::mousePressEvent (e);
+#endif
+  QGraphicsObject::mousePressEvent(e);
 }
 
 QPainterPath CustomObyek::shape() const {

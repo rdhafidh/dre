@@ -3,7 +3,9 @@
 #include <sceneview.h>
 #include <undocommand.h>
 #include <QApplication>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QMetaObject>
@@ -74,6 +76,7 @@ void BaseAllItems::setItemIsRemoved(bool e) { m_itemIsRemoved = e; }
 bool BaseAllItems::itemIsRemoved() const { return m_itemIsRemoved; }
 
 void BaseAllItems::dumpPropertiInfo() {
+#ifdef DEBUGGING_ENABLED
   const QMetaObject *metaObject = this->metaObject();
   for (int i = 0; i < metaObject->propertyCount(); ++i) {
     auto prop = QString::fromLatin1(metaObject->property(i).name());
@@ -82,6 +85,7 @@ void BaseAllItems::dumpPropertiInfo() {
              << property(prop.toStdString().c_str());
   }
   qDebug() << "localrect" << localrect;
+#endif
 }
 
 QRectF BaseAllItems::boundingRect() const { return this->rect(); }
@@ -122,27 +126,30 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
   if (isSelected() && isalllHandelNotNull() && smpat->isModeResize()) {
     qreal minheight = smpat->rect().height() * 2;
-
+#ifdef DEBUGGING_ENABLED
     qDebug() << "item y " << y() << " mouse y scene " << event->scenePos().y()
              << "mouse y screen" << event->screenPos().y() << "height"
              << boundingRect().height() << "min height" << minheight
              << "smpat pos" << smpat->pos() << "current item pos" << pos()
              << "mapToScene (event->pos ()).y()" << mapToScene(event->pos()).y()
              << "bottom" << localrect.bottom();
-
+#endif
     prepareGeometryChange();
     qreal posTopCorner =
         localrect.top() + event->pos().y() - event->lastPos().y();
+#ifdef DEBUGGING_ENABLED
     qDebug() << "====================== before set ====================";
     qDebug() << "localrect.top ()" << localrect.top() << "posTopCorner"
              << posTopCorner;
     qDebug() << "======================  end =========================";
-
+#endif
     qreal overlap = localrect.bottom() - localrect.top();
     if (overlap <= minheight && localrect.top() < posTopCorner) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap " << overlap << "found localrect.top () "
                << localrect.top() << "posTopCorner" << posTopCorner << "bottom"
                << localrect.bottom();
+#endif
       return;
     }
     // disini cuman y sbg postopcorner
@@ -151,19 +158,21 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         qobject_cast<SceneView *>(scene())->pageItemDesign()->gridSize();
     posTopCorner = round(posTopCorner / gridsize) * gridsize;
     localrect.setTop(posTopCorner);
-    QPointF poshint( localrect.left() + event->pos().x() - event->lastPos().x(),posTopCorner);
-    smpat->updatePointerModeRuleOfItemLinePos ( poshint);
-    
+    QPointF poshint(localrect.left() + event->pos().x() - event->lastPos().x(),
+                    posTopCorner);
+    smpat->updatePointerModeRuleOfItemLinePos(poshint);
+
     updateHandlePos();
 
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
                      localrect.height());
     scn->undostack()->push(new XCommands::MoveItemCommand(this, localgeom));
+#ifdef DEBUGGING_ENABLED
     qDebug() << "rect top" << localrect.top() << "currentpoint"
              << "minheight" << (qreal)minheight << "posTopCorner"
              << posTopCorner;
-
+#endif
     this->rectChanged(localrect);
     update(localrect);
 
@@ -172,27 +181,31 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   }
   if (isSelected() && isalllHandelNotNull() && smpsb->isModeResize()) {
     qreal minheight = smpsb->rect().height() * 2;
-
+#ifdef DEBUGGING_ENABLED
     qDebug() << "item y " << y() << " mouse y scene " << event->scenePos().y()
              << "mouse y screen" << event->screenPos().y() << "height"
              << boundingRect().height() << "min height" << minheight
              << "smpat pos" << smpat->pos() << "current item pos" << pos()
              << "mapToScene (event->pos ()).y()" << mapToScene(event->pos()).y()
              << "bottom" << localrect.bottom();
-
+#endif
     prepareGeometryChange();
     qreal posBottom =
         localrect.bottom() + event->pos().y() - event->lastPos().y();
 
     qreal overlap = localrect.bottom() - localrect.top();
+#ifdef DEBUGGING_ENABLED
     qDebug() << "====================== before set ====================";
     qDebug() << "localrect.posBottom ()" << localrect.bottom() << "posBottom"
              << posBottom;
     qDebug() << "overlap" << overlap;
     qDebug() << "======================  end =========================";
+#endif
     if (overlap <= minheight && localrect.bottom() > posBottom) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "found localrect.bottom () " << localrect.bottom()
                << "posbotom" << posBottom;
+#endif
       return;
     }
 
@@ -201,9 +214,10 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     posBottom = round(posBottom / gridsize) * gridsize;
 
     localrect.setBottom(posBottom);
-    QPointF poshint( localrect.left() + event->pos().x() - event->lastPos().x(),posBottom);
-    smpsb->updatePointerModeRuleOfItemLinePos ( poshint);
-    
+    QPointF poshint(localrect.left() + event->pos().x() - event->lastPos().x(),
+                    posBottom);
+    smpsb->updatePointerModeRuleOfItemLinePos(poshint);
+
     updateHandlePos();
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -211,28 +225,32 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     scn->undostack()->push(new XCommands::MoveItemCommand(this, localgeom));
     this->rectChanged(localrect);
     update(localrect);
+#ifdef DEBUGGING_ENABLED
     qDebug() << "rect bottom" << localrect.bottom() << "minheight"
              << (qreal)minheight << "posBottom" << posBottom;
-
+#endif
     this->emitRefreshItemProperty();
     return;
   }
   if (isSelected() && isalllHandelNotNull() && smpsk->isModeResize()) {
     qreal minwidthhandle = smpsk->rect().width() * 2;
+#ifdef DEBUGGING_ENABLED
     qDebug() << "item y " << y() << " mouse y scene " << event->scenePos().y()
              << "mouse y screen" << event->screenPos().y() << "height"
              << boundingRect().height() << "min height" << minwidthhandle
              << "smpat pos" << smpat->pos() << "current item pos" << pos()
              << "mapToScene (event->pos ()).y()" << mapToScene(event->pos()).y()
              << "bottom" << localrect.bottom();
-
+#endif
     prepareGeometryChange();
     qreal posLeft = localrect.left() + event->pos().x() - event->lastPos().x();
     qreal overlap = localrect.right() - localrect.left();
     if (overlap <= minwidthhandle && localrect.left() < posLeft) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap " << overlap << "found localrect.left () "
                << localrect.left() << "posLeft" << posLeft << "right"
                << localrect.right();
+#endif
       return;
     }
     int gridsize =
@@ -253,21 +271,24 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   }
   if (isSelected() && isalllHandelNotNull() && smpsknn->isModeResize()) {
     qreal minwidthhandle = smpsknn->rect().width() * 2;
+#ifdef DEBUGGING_ENABLED
     qDebug() << "item y " << y() << " mouse y scene " << event->scenePos().y()
              << "mouse y screen" << event->screenPos().y() << "height"
              << boundingRect().height() << "min height" << minwidthhandle
              << "smpat pos" << smpsknn->pos() << "current item pos" << pos()
              << "mapToScene (event->pos ()).y()" << mapToScene(event->pos()).y()
              << "bottom" << localrect.bottom();
-
+#endif
     prepareGeometryChange();
     qreal posRight =
         localrect.right() + event->pos().x() - event->lastPos().x();
     qreal overlap = localrect.right() - localrect.left();
     if (overlap <= minwidthhandle && localrect.right() > posRight) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap " << overlap << "found localrect.right () "
                << localrect.right() << "posRight" << posRight << "left"
                << localrect.left();
+#endif
       return;
     }
     int gridsize =
@@ -296,8 +317,10 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
     qreal overlap = localrect.bottom() - localrect.top();
     if (overlap <= minheighthandlebottom && localrect.bottom() > posBottom) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "found localrect.bottom () phase bawah kanan bag bawah "
                << localrect.bottom() << "posbotom" << posBottom;
+#endif
       return;
     }
     int gridsize =
@@ -312,10 +335,12 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         localrect.right() + event->pos().x() - event->lastPos().x();
     overlap = localrect.right() - localrect.left();
     if (overlap <= minwidthandlekanan && localrect.right() > posRight) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap " << overlap
                << "found localrect.right () phase bawah kanan bag kanan"
                << localrect.right() << "posRight" << posRight << "left"
                << localrect.left();
+#endif
       return;
     }
     posRight = round(posRight / gridsize) * gridsize;
@@ -342,9 +367,11 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
     qreal overlap = localrect.bottom() - localrect.top();
     if (overlap <= minheight_bag_atas && localrect.top() < posTopCorner) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap  phase atas kiri bag atas " << overlap
                << "found localrect.top () " << localrect.top() << "posTopCorner"
                << posTopCorner << "bottom" << localrect.bottom();
+#endif
       return;
     }
     int gridsize =
@@ -356,9 +383,11 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     qreal posLeft = localrect.left() + event->pos().x() - event->lastPos().x();
     overlap = localrect.right() - localrect.left();
     if (overlap <= minwidth_bag_kiri && localrect.left() < posLeft) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap phase atas kiri bag kiri" << overlap
                << "found localrect.left () " << localrect.left() << "posLeft"
                << posLeft << "right" << localrect.right();
+#endif
       return;
     }
     posLeft = round(posLeft / gridsize) * gridsize;
@@ -384,9 +413,11 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
     qreal overlap = localrect.bottom() - localrect.top();
     if (overlap <= minheight_bag_atas && localrect.top() < posTopCorner) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap  phase atas kanan bag atas " << overlap
                << "found localrect.top () " << localrect.top() << "posTopCorner"
                << posTopCorner << "bottom" << localrect.bottom();
+#endif
       return;
     }
     int gridsize =
@@ -399,9 +430,11 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
         localrect.right() + event->pos().x() - event->lastPos().x();
     overlap = localrect.right() - localrect.left();
     if (overlap <= minwidth_bag_kanan && localrect.right() > posRight) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap phase atas kanan bag kanan" << overlap
                << "found localrect.right () " << localrect.right() << "posRight"
                << posRight << "left" << localrect.left();
+#endif
       return;
     }
     posRight = round(posRight / gridsize) * gridsize;
@@ -428,8 +461,10 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
     qreal overlap = localrect.bottom() - localrect.top();
     if (overlap <= minheighthandlebottom && localrect.bottom() > posBottom) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "found localrect.bottom () phase bawah kiri bag bawah "
                << localrect.bottom() << "posbotom" << posBottom;
+#endif
       return;
     }
     int gridsize =
@@ -441,9 +476,11 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     qreal posLeft = localrect.left() + event->pos().x() - event->lastPos().x();
     overlap = localrect.right() - localrect.left();
     if (overlap <= minwidthhandlekiri && localrect.left() < posLeft) {
+#ifdef DEBUGGING_ENABLED
       qDebug() << "overlap phase bawah kiri bagian kiri" << overlap
                << "found localrect.left () " << localrect.left() << "posLeft"
                << posLeft << "right" << localrect.right();
+#endif
       return;
     }
     posLeft = round(posLeft / gridsize) * gridsize;
@@ -507,8 +544,8 @@ void BaseAllItems::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 
 void BaseAllItems::setModeOnOffSelection(bool b) {
   modeselect = b;
-  if (b && !smpat && !smpsk && !smpsb && !smpsknn && !smh_a_k 
-           &&  !smh_a_knn && !smh_b_knn && !smh_b_kr) {
+  if (b && !smpat && !smpsk && !smpsb && !smpsknn && !smh_a_k && !smh_a_knn &&
+      !smh_b_knn && !smh_b_kr) {
     smpat = new SelectionMarkerHandleBase(this);
     smpat->setCursorType(Qt::SizeVerCursor);
     smpat->setForParentItemType(getItemType());
@@ -516,7 +553,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpat->setSelectionMarkerSize(markerSize);
     smpat->setBrushMarker(QBrush(Qt::green));
     smpat->setPos(0, 0);
-    smpat->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_TOP);
+    smpat->setPointerModeRulerOfItemType(
+        PointerModeRulerOfItem::POINTER_MODE_TOP);
     smpat->setVisible(true);
 
     smpsk = new SelectionMarkerHandleBase(this);
@@ -526,7 +564,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpsk->setSelectionMarkerSize(markerSize);
     smpsk->setBrushMarker(QBrush(Qt::green));
     smpsk->setPos(0, 0);
-    smpsk->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_LEFT);
+    smpsk->setPointerModeRulerOfItemType(
+        PointerModeRulerOfItem::POINTER_MODE_LEFT);
     smpsk->setVisible(true);
 
     smpsb = new SelectionMarkerHandleBase(this);
@@ -536,7 +575,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpsb->setBrushMarker(QBrush(Qt::green));
     updateHandlePos();
     smpsb->setPos(0, 0);
-    smpsb->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_BOTTOM);
+    smpsb->setPointerModeRulerOfItemType(
+        PointerModeRulerOfItem::POINTER_MODE_BOTTOM);
     smpsb->setVisible(true);
 
     smpsknn = new SelectionMarkerHandleBase(this);
@@ -546,7 +586,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smpsknn->setBrushMarker(QBrush(Qt::green));
     updateHandlePos();
     smpsknn->setPos(0, 0);
-    smpsknn->setPointerModeRulerOfItemType(PointerModeRulerOfItem::POINTER_MODE_RIGHT);
+    smpsknn->setPointerModeRulerOfItemType(
+        PointerModeRulerOfItem::POINTER_MODE_RIGHT);
     smpsknn->setVisible(true);
 
     smh_a_k = new SelectionMarkerHandleBase(this);
@@ -585,7 +626,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smh_b_kr->setPos(0, 0);
     smh_b_kr->setVisible(true);
   } else {
-    if (scene() && smpat && smpsk && smpsb && smpsknn && smh_a_k &&  smh_a_knn && smh_b_knn && smh_b_kr) {
+    if (scene() && smpat && smpsk && smpsb && smpsknn && smh_a_k && smh_a_knn &&
+        smh_b_knn && smh_b_kr) {
       scene()->removeItem(smpat);
       delete smpat;
       smpat = nullptr;

@@ -1,5 +1,7 @@
 #include "itemshapebase.h"
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include <QPainterPath>
 
 ItemShapeBase::ItemShapeBase(QObject *parent) : QObject(parent) {

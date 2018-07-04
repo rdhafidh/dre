@@ -6,7 +6,9 @@
 #include <items/textitem.h>
 #include <pageitem.h>
 #include <ruleritem.h>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 #include <QGraphicsSceneMouseEvent>
 #include <QList>
 

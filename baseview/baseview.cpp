@@ -1,13 +1,15 @@
 #include "baseview.h"
 #include <QMouseEvent>
+#ifdef DEBUGGING_ENABLED
 #include <QDebug>
+#endif
 
-Baseview::Baseview(QWidget *parent) : QGraphicsView(parent) { }
+Baseview::Baseview(QWidget *parent) : QGraphicsView(parent) {}
 
 Baseview::~Baseview() {}
 
 void Baseview::setZoomFactor(qreal factor) {
-  setZoom(factor); 
+  setZoom(factor);
   // todo adjust vertical horizontal ruler zoom factor
 }
 
@@ -17,25 +19,22 @@ void Baseview::scaleView(qreal scaleFactor) {
   qreal factor = matrix()
                      .scale(scaleFactor, scaleFactor)
                      .mapRect(QRectF(0, 0, 1, 1))
-                     .width(); 
-  if (factor < 0.30 || factor > 1.3 ) return;
-  
-  qDebug()<<"current factor"<<factor;
+                     .width();
+  if (factor < 0.30 || factor > 1.3) return;
+#ifdef DEBUGGING_ENABLED
+  qDebug() << "current factor" << factor;
+#endif
   scale(scaleFactor, scaleFactor);
 
   emit scaled(scaleFactor);
 }
 
-void Baseview::initZoomLevel()
-{
-    
-}
- 
+void Baseview::initZoomLevel() {}
 
 void Baseview::mouseMoveEvent(QMouseEvent *event) {
   QGraphicsView::mouseMoveEvent(event);
   QPointF point = mapToScene(event->pos());
-  this->cursorPosition(point); 
+  this->cursorPosition(point);
 }
 
 void Baseview::wheelEvent(QWheelEvent *event) {

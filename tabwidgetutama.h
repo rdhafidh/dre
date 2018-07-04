@@ -5,18 +5,16 @@
 
 class TabWidgetUtama : public QTabWidget {
   Q_OBJECT
-public:
-  explicit TabWidgetUtama(QWidget *parent) ;
-  void manualremovetab(int idx) ;
+ public:
+  explicit TabWidgetUtama(QWidget *parent);
+  void manualremovetab(int idx);
 
-  ~TabWidgetUtama();
-//  void removetabpenjualan() ;
+  ~TabWidgetUtama(); 
 
-private Q_SLOTS:
+ private Q_SLOTS:
   void emitclosetab(int idx);
 
-private:
-//  void asktoremovetabjualorno(QWidget *widget) ;
+ private: 
 };
 
-#endif // TABWIDGETUTAMA_H
+#endif  // TABWIDGETUTAMA_H

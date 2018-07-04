@@ -47,24 +47,11 @@ class MoveItemPosOnlyCommand : public QUndoCommand {
 class InsertItemCommand : public QUndoCommand {
  public:
   /*
-   * default behaivor ketika insert command 
+   * default behaivor ketika insert command
    * tetap selalu di create jadi cuman di mark
-   * kalo terjadi undo di removeKindsItem 
+   * kalo terjadi undo di removeKindsItem
    * */
-  InsertItemCommand(SceneView *fromscene,const ItemConst::Tipe & type, QUndoCommand *parent = Q_NULLPTR);
-
-  void undo() Q_DECL_OVERRIDE;
-  void redo() Q_DECL_OVERRIDE;
-  int id() const Q_DECL_OVERRIDE;
-
- private:
-  BaseAllItems *newitem; 
-  ItemConst::Tipe m_tipeitem;
-  SceneView *scene;
-}; 
-class DeleteItemCommand : public QUndoCommand {
- public:
-  DeleteItemCommand(BaseAllItems  *atItem,
+  InsertItemCommand(SceneView *fromscene, const ItemConst::Tipe &type,
                     QUndoCommand *parent = Q_NULLPTR);
 
   void undo() Q_DECL_OVERRIDE;
@@ -72,7 +59,20 @@ class DeleteItemCommand : public QUndoCommand {
   int id() const Q_DECL_OVERRIDE;
 
  private:
-  BaseAllItems  *fromitem; 
+  BaseAllItems *newitem;
+  ItemConst::Tipe m_tipeitem;
+  SceneView *scene;
+};
+class DeleteItemCommand : public QUndoCommand {
+ public:
+  DeleteItemCommand(BaseAllItems *atItem, QUndoCommand *parent = Q_NULLPTR);
+
+  void undo() Q_DECL_OVERRIDE;
+  void redo() Q_DECL_OVERRIDE;
+  int id() const Q_DECL_OVERRIDE;
+
+ private:
+  BaseAllItems *fromitem;
   SceneView *fromscene;
 };
 }
