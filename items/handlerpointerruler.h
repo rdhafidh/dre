@@ -26,7 +26,8 @@ public:
     QGraphicsLineItem *singleLineItem();
     
 private:
-    void buildSingleLineHor(BaseAllItems *fromParent);  
+    void buildSingleLineHor(BaseAllItems *fromParent); 
+    void buildSingleLineVert(BaseAllItems *fromParent);
     
     void updatePosCentralAtas(const QPointF &p);
     void updatePosCentralKiri(const QPointF &p);
