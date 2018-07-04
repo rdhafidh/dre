@@ -13,9 +13,9 @@ HandlerPointerRuler::HandlerPointerRuler(const PointerModeRulerOfItem &mode,
     case PointerModeRulerOfItem::POINTER_MODE_TOP:
       this->buildSingleLineHor(fromParent);
       break;
-  case PointerModeRulerOfItem::POINTER_MODE_LEFT:
-  case PointerModeRulerOfItem::POINTER_MODE_RIGHT:
-      this->buildSingleLineVert (fromParent);
+    case PointerModeRulerOfItem::POINTER_MODE_LEFT:
+    case PointerModeRulerOfItem::POINTER_MODE_RIGHT:
+      this->buildSingleLineVert(fromParent);
       break;
   }
 }
@@ -67,82 +67,77 @@ void HandlerPointerRuler::buildSingleLineHor(BaseAllItems *fromParent) {
     QPointF left;
     QPointF right;
     switch (m_mode) {
-    case PointerModeRulerOfItem::POINTER_MODE_TOP:
-        left.setX (-scn->width ());
-        left.setY (fromParent->rect().y());
-        right.setX (scn->pageItemDesign()->getRect().right());
-        right.setY (fromParent->rect().y());
+      case PointerModeRulerOfItem::POINTER_MODE_TOP:
+        left.setX(-scn->width());
+        left.setY(fromParent->rect().y());
+        right.setX(scn->pageItemDesign()->getRect().right());
+        right.setY(fromParent->rect().y());
         m_single_line->setLine(QLineF(left, right));
         break;
-    case PointerModeRulerOfItem::POINTER_MODE_BOTTOM:
-        left.setX (-scn->width ());
-        left.setY (fromParent->rect().bottom ());
-        right.setX (scn->pageItemDesign()->getRect().right());
-        right.setY (fromParent->rect().bottom ());
+      case PointerModeRulerOfItem::POINTER_MODE_BOTTOM:
+        left.setX(-scn->width());
+        left.setY(fromParent->rect().bottom());
+        right.setX(scn->pageItemDesign()->getRect().right());
+        right.setY(fromParent->rect().bottom());
         m_single_line->setLine(QLineF(left, right));
         break;
-    default:
+      default:
         break;
-    } 
+    }
   }
 }
 
-void HandlerPointerRuler::buildSingleLineVert(BaseAllItems *fromParent)
-{
-    SceneView *scn = qobject_cast<SceneView *>(fromParent->scene());
-    if (scn) {
-      m_single_line = new QGraphicsLineItem(fromParent);
-      QPen pen;
-      pen.setWidthF(2.0);
-      pen.setColor(QColor("blue"));
-      m_single_line->setPen(pen);
-      QPointF top;
-      QPointF down;
-      switch (m_mode) {
+void HandlerPointerRuler::buildSingleLineVert(BaseAllItems *fromParent) {
+  SceneView *scn = qobject_cast<SceneView *>(fromParent->scene());
+  if (scn) {
+    m_single_line = new QGraphicsLineItem(fromParent);
+    QPen pen;
+    pen.setWidthF(2.0);
+    pen.setColor(QColor("blue"));
+    m_single_line->setPen(pen);
+    QPointF top;
+    QPointF down;
+    switch (m_mode) {
       case PointerModeRulerOfItem::POINTER_MODE_LEFT:
-          top.setX (fromParent->rect ().left ());
-          top.setY (-scn->height ());
-          down.setX (fromParent->rect ().left ());
-          down.setY (scn->pageItemDesign ()->getRect ().bottom ());
-          m_single_line->setLine(QLineF(top, down));
-          break;
+        top.setX(fromParent->rect().left());
+        top.setY(-scn->height());
+        down.setX(fromParent->rect().left());
+        down.setY(scn->pageItemDesign()->getRect().bottom());
+        m_single_line->setLine(QLineF(top, down));
+        break;
       case PointerModeRulerOfItem::POINTER_MODE_RIGHT:
-          top.setX (fromParent->rect ().right ());
-          top.setY (-scn->height ());
-          down.setX (fromParent->rect ().right ());
-          down.setY (scn->pageItemDesign ()->getRect ().bottom ());
-          m_single_line->setLine(QLineF(top, down));
-          break;
+        top.setX(fromParent->rect().right());
+        top.setY(-scn->height());
+        down.setX(fromParent->rect().right());
+        down.setY(scn->pageItemDesign()->getRect().bottom());
+        m_single_line->setLine(QLineF(top, down));
+        break;
       default:
-          break;
-      } 
+        break;
     }
-} 
+  }
+}
 
-void HandlerPointerRuler::updatePosCentralAtas(const QPointF &p) { 
+void HandlerPointerRuler::updatePosCentralAtas(const QPointF &p) {
   if (m_single_line) {
     SceneView *scn = qobject_cast<SceneView *>(m_single_line->scene());
     if (scn) {
-      QPointF left(-scn->width (),
-                   p.y());
-      QPointF right(scn->pageItemDesign()->getRect().right(),
-                    p.y());
+      QPointF left(-scn->width(), p.y());
+      QPointF right(scn->pageItemDesign()->getRect().right(), p.y());
       m_single_line->setLine(QLineF(left, right));
     }
   }
 }
 
 void HandlerPointerRuler::updatePosCentralKiri(const QPointF &p) {
-    if (m_single_line) {
-      SceneView *scn = qobject_cast<SceneView *>(m_single_line->scene());
-      if (scn) {
-        QPointF top(p.x(),
-                     -scn->height ());
-        QPointF down(p.x (),
-                      scn->pageItemDesign ()->getRect ().bottom ());
-        m_single_line->setLine(QLineF(top, down));
-      }
+  if (m_single_line) {
+    SceneView *scn = qobject_cast<SceneView *>(m_single_line->scene());
+    if (scn) {
+      QPointF top(p.x(), -scn->height());
+      QPointF down(p.x(), scn->pageItemDesign()->getRect().bottom());
+      m_single_line->setLine(QLineF(top, down));
     }
+  }
 }
 
 void HandlerPointerRuler::updatePosCentralBawah(const QPointF &p) {
@@ -150,5 +145,5 @@ void HandlerPointerRuler::updatePosCentralBawah(const QPointF &p) {
 }
 
 void HandlerPointerRuler::updatePosCentralKanan(const QPointF &p) {
-    updatePosCentralKiri(p);
+  updatePosCentralKiri(p);
 }

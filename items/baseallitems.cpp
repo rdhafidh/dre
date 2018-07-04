@@ -258,9 +258,9 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     posLeft = round(posLeft / gridsize) * gridsize;
 
     localrect.setLeft(posLeft);
-    QPointF poshint(   posLeft,localrect.left() + event->pos().x() - event->lastPos().x()
-                 );
-    smpsk->updatePointerModeRuleOfItemLinePos (poshint);
+    QPointF poshint(posLeft,
+                    localrect.left() + event->pos().x() - event->lastPos().x());
+    smpsk->updatePointerModeRuleOfItemLinePos(poshint);
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
                      localrect.height());
@@ -299,10 +299,10 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     posRight = round(posRight / gridsize) * gridsize;
 
     localrect.setRight(posRight);
-    QPointF poshint(   posRight,localrect.right () + event->pos().x() - event->lastPos().x()
-                 );
-    smpsknn->updatePointerModeRuleOfItemLinePos (poshint);
-    
+    QPointF poshint(
+        posRight, localrect.right() + event->pos().x() - event->lastPos().x());
+    smpsknn->updatePointerModeRuleOfItemLinePos(poshint);
+
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
                      localrect.height());
