@@ -198,5 +198,5 @@ void SelectionMarkerHandleBase::handlePointerRulerFromCursorType(
   }
   m_hpr.reset(new HandlerPointerRuler(
       cursor, qgraphicsitem_cast<BaseAllItems *>(parentItem())));
-  m_show_pointer_timer.start(4000);
+  m_show_pointer_timer.start(8000);
 }
