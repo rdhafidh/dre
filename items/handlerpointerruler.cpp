@@ -17,11 +17,26 @@ HandlerPointerRuler::HandlerPointerRuler(const PointerModeRulerOfItem &mode,
     case PointerModeRulerOfItem::POINTER_MODE_RIGHT:
       this->buildSingleLineVert(fromParent);
       break;
+    case PointerModeRulerOfItem::POINTER_MODE_TOPLEFT:
+      this->buildMultiLineTopLeft(fromParent);
+      break;
   }
 }
 
 HandlerPointerRuler::~HandlerPointerRuler() {
+  auto doReleaseMultiLine = [this]() {
+    auto l_s = this->m_multiLineMap.find("line1");
+    auto t_s = this->m_multiLineMap.find("line2");
+    if (l_s != m_multiLineMap.end() && t_s != m_multiLineMap.end() &&
+        l_s->second != nullptr && t_s->second != nullptr) {
+      delete l_s->second;
+      delete t_s->second;
+    }
+  };
   switch (m_mode) {
+    case PointerModeRulerOfItem::POINTER_MODE_TOPLEFT:
+      doReleaseMultiLine();
+      break;
     case PointerModeRulerOfItem::POINTER_MODE_BOTTOM:
     case PointerModeRulerOfItem::POINTER_MODE_LEFT:
     case PointerModeRulerOfItem::POINTER_MODE_RIGHT:
@@ -52,8 +67,43 @@ void HandlerPointerRuler::updateCentralPos(const QPointF &pos) {
   }
 }
 
+void HandlerPointerRuler::updateMultiLineCentralPos(
+    const std::pair<QPointF, QPointF> &pf) {
+  switch (m_mode) {
+    case PointerModeRulerOfItem::POINTER_MODE_TOPLEFT:
+      this->updatePosLeftAndTop(pf);
+      break;
+  }
+}
+
 QGraphicsLineItem *HandlerPointerRuler::singleLineItem() {
   return m_single_line;
+}
+
+bool HandlerPointerRuler::isMultiLineItem() const {
+  auto l_s = this->m_multiLineMap.find("line1");
+  auto t_s = this->m_multiLineMap.find("line2");
+  if (l_s != m_multiLineMap.end() && t_s != m_multiLineMap.end() &&
+      l_s->second != nullptr && t_s->second != nullptr) {
+    return true;
+  }
+  return false;
+}
+
+void HandlerPointerRuler::askToDestroyMultiLineItem() {
+  auto l_s = this->m_multiLineMap.find("line1");
+  auto t_s = this->m_multiLineMap.find("line2");
+  if (l_s != m_multiLineMap.end() && t_s != m_multiLineMap.end() &&
+      l_s->second != nullptr && t_s->second != nullptr) {
+    SceneView *scn = qobject_cast<SceneView *>(l_s->second->scene());
+    if (scn) {
+      scn->removeItem(l_s->second);
+      scn->removeItem(t_s->second);
+      delete l_s->second;
+      delete t_s->second;
+    }
+  }
+  m_multiLineMap.clear();
 }
 
 void HandlerPointerRuler::buildSingleLineHor(BaseAllItems *fromParent) {
@@ -118,6 +168,36 @@ void HandlerPointerRuler::buildSingleLineVert(BaseAllItems *fromParent) {
   }
 }
 
+void HandlerPointerRuler::buildMultiLineTopLeft(BaseAllItems *fromParent) {
+  SceneView *scn = qobject_cast<SceneView *>(fromParent->scene());
+  if (scn) {
+    auto line_left = new QGraphicsLineItem(fromParent);
+    QPen pen;
+    pen.setWidthF(2.0);
+    pen.setColor(QColor("blue"));
+    line_left->setPen(pen);
+    QPointF top;
+    QPointF down;
+    top.setX(fromParent->rect().left());
+    top.setY(-scn->height());
+    down.setX(fromParent->rect().left());
+    down.setY(scn->pageItemDesign()->getRect().bottom());
+    line_left->setLine(QLineF(top, down));
+
+    auto line_top = new QGraphicsLineItem(fromParent);
+    line_top->setPen(pen);
+    QPointF left;
+    QPointF right;
+    left.setX(-scn->width());
+    left.setY(fromParent->rect().y());
+    right.setX(scn->pageItemDesign()->getRect().right());
+    right.setY(fromParent->rect().y());
+    line_top->setLine(QLineF(left, right));
+    m_multiLineMap.insert(std::make_pair("line1", line_left));
+    m_multiLineMap.insert(std::make_pair("line2", line_top));
+  }
+}
+
 void HandlerPointerRuler::updatePosCentralAtas(const QPointF &p) {
   if (m_single_line) {
     SceneView *scn = qobject_cast<SceneView *>(m_single_line->scene());
@@ -146,4 +226,22 @@ void HandlerPointerRuler::updatePosCentralBawah(const QPointF &p) {
 
 void HandlerPointerRuler::updatePosCentralKanan(const QPointF &p) {
   updatePosCentralKiri(p);
+}
+
+void HandlerPointerRuler::updatePosLeftAndTop(
+    const std::pair<QPointF, QPointF> &lt) {
+  auto l_s = m_multiLineMap.find("line1");
+  auto t_s = m_multiLineMap.find("line2");
+  if (l_s != m_multiLineMap.end() && t_s != m_multiLineMap.end()) {
+    SceneView *scn = qobject_cast<SceneView *>(l_s->second->scene());
+    if (scn) {
+      QPointF top(lt.first.x(), -scn->height());
+      QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
+      l_s->second->setLine(QLineF(top, down));
+
+      QPointF left(-scn->width(), lt.second.y());
+      QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
+      t_s->second->setLine(QLineF(left, right));
+    }
+  }
 }

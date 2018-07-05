@@ -24,6 +24,10 @@ SelectionMarkerHandleBase::SelectionMarkerHandleBase(QGraphicsItem *parent)
           scn->removeItem(m_hpr->singleLineItem());
           m_hpr.reset(nullptr);
         }
+        if (scn && m_hpr.get() != nullptr && m_hpr->isMultiLineItem()) {
+          m_hpr->askToDestroyMultiLineItem();
+          m_hpr.reset(nullptr);
+        }
       }
     }
   });
@@ -79,6 +83,13 @@ void SelectionMarkerHandleBase::updatePointerModeRuleOfItemLinePos(
     const QPointF &pos) {
   if (m_hpr.get() != nullptr) {
     m_hpr->updateCentralPos(pos);
+  }
+}
+
+void SelectionMarkerHandleBase::updatePointerModeRuleOfItemLinePos(
+    const std::pair<QPointF, QPointF> &pmo) {
+  if (m_hpr.get() != nullptr) {
+    m_hpr->updateMultiLineCentralPos(pmo);
   }
 }
 

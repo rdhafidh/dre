@@ -2,11 +2,12 @@
 #define SELECTIONMARKERHANDLEBASE_H
 
 #include <constvalue.h>
+#include <handlerpointerruler.h>
 #include <QBrush>
 #include <QGraphicsObject>
-#include <handlerpointerruler.h>
-#include <memory>
 #include <QTimer>
+#include <memory>
+#include <utility>
 
 enum class HandlePosType { UNDEFINED = 0x0, TOP = 1, LEFT, BOTTOM, RIGHT };
 
@@ -24,7 +25,9 @@ class SelectionMarkerHandleBase : public QGraphicsItem {
   void setRect(const QRectF &r);
   QRectF rect() const;
   void setPointerModeRulerOfItemType(const PointerModeRulerOfItem &ty);
-  void updatePointerModeRuleOfItemLinePos(const QPointF & pos);
+  void updatePointerModeRuleOfItemLinePos(const QPointF &pos);
+  void updatePointerModeRuleOfItemLinePos(
+      const std::pair<QPointF, QPointF> &pmo);
 
  protected:
   // sistem
@@ -39,9 +42,9 @@ class SelectionMarkerHandleBase : public QGraphicsItem {
   QRectF boundingRect() const Q_DECL_OVERRIDE;
   QPainterPath shape() const Q_DECL_OVERRIDE;
 
- private: 
+ private:
   void handlePointerRulerFromCursorType(const PointerModeRulerOfItem &cursor);
-  
+
   int markerSize;
   bool moderesize;
   QBrush brush;
@@ -50,7 +53,7 @@ class SelectionMarkerHandleBase : public QGraphicsItem {
   Qt::CursorShape m_cursorshape;
   HandlePosType posisi_handle = HandlePosType::UNDEFINED;
   std::unique_ptr<HandlerPointerRuler> m_hpr;
-  QTimer m_show_pointer_timer; 
+  QTimer m_show_pointer_timer;
   PointerModeRulerOfItem m_mode_pointer_ruler;
 };
 
