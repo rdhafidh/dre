@@ -25,6 +25,7 @@ BaseAllItems::BaseAllItems(QGraphicsItem *parent)
       smh_b_knn(nullptr),
       smh_b_kr(nullptr),
       m_rotasi(0) {
+  m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_IS_UNDEFINED;
   setAcceptHoverEvents(true);
   setFlags(QGraphicsItem::ItemIsMovable |
            QGraphicsItem::ItemSendsScenePositionChanges |
@@ -135,6 +136,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
              << "bottom" << localrect.bottom();
 #endif
     prepareGeometryChange();
+    m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_TOP;
+    checkOnlyOnceRulerPointerMode();
     qreal posTopCorner =
         localrect.top() + event->pos().y() - event->lastPos().y();
 #ifdef DEBUGGING_ENABLED
@@ -190,6 +193,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
              << "bottom" << localrect.bottom();
 #endif
     prepareGeometryChange();
+    m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_BOTTOM;
+    checkOnlyOnceRulerPointerMode();
     qreal posBottom =
         localrect.bottom() + event->pos().y() - event->lastPos().y();
 
@@ -243,6 +248,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
              << "bottom" << localrect.bottom();
 #endif
     prepareGeometryChange();
+    m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_LEFT;
+    checkOnlyOnceRulerPointerMode();
     qreal posLeft = localrect.left() + event->pos().x() - event->lastPos().x();
     qreal overlap = localrect.right() - localrect.left();
     if (overlap <= minwidthhandle && localrect.left() < posLeft) {
@@ -283,6 +290,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
              << "bottom" << localrect.bottom();
 #endif
     prepareGeometryChange();
+    m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_RIGHT;
+    checkOnlyOnceRulerPointerMode();
     qreal posRight =
         localrect.right() + event->pos().x() - event->lastPos().x();
     qreal overlap = localrect.right() - localrect.left();
@@ -316,6 +325,9 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   }
   if (isSelected() && isalllHandelNotNull() && smh_b_knn->isModeResize()) {
     prepareGeometryChange();
+    m_currentModeRulerPointer =
+        PointerModeRulerOfItem::POINTER_MODE_BOTTOMRIGHT;
+    checkOnlyOnceRulerPointerMode();
     // double handle bawah sama kanan
     // bawah dulu
     qreal minheighthandlebottom = smpsb->rect().height() * 2;
@@ -366,6 +378,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
   if (isSelected() && isalllHandelNotNull() && smh_a_k->isModeResize()) {
     prepareGeometryChange();
+    m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_TOPLEFT;
+    checkOnlyOnceRulerPointerMode();
     // double handle atas sama kiri
     // atas dulu
     qreal posTopCorner =
@@ -421,6 +435,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
   }
   if (isSelected() && isalllHandelNotNull() && smh_a_knn->isModeResize()) {
     prepareGeometryChange();
+    m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_TOPRIGHT;
+    checkOnlyOnceRulerPointerMode();
     // double handle atas sama kanan
     // atas dulu
     qreal posTopCorner =
@@ -458,7 +474,7 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     // top -> right
     QPointF u_pos_top(posTopCorner, posTopCorner);
     QPointF u_pos_right(posRight, posRight);
-    smh_a_knn->updatePointerModeRuleOfItemLinePos (
+    smh_a_knn->updatePointerModeRuleOfItemLinePos(
         std::make_pair(u_pos_top, u_pos_right));
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
@@ -474,6 +490,8 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
 
   if (isSelected() && isalllHandelNotNull() && smh_b_kr->isModeResize()) {
     prepareGeometryChange();
+    m_currentModeRulerPointer = PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT;
+    checkOnlyOnceRulerPointerMode();
     // doubel handle bawah kiri pojok
     // handle bawah dulu
     qreal minheighthandlebottom = smpsb->rect().height() * 2;
@@ -561,6 +579,46 @@ void BaseAllItems::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   if (!isSelected()) this->forceThisItemSelected(this);
 
   this->createContextMenu(event);
+}
+
+void BaseAllItems::checkOnlyOnceRulerPointerMode() {
+  if (smpat &&
+      m_currentModeRulerPointer != PointerModeRulerOfItem::POINTER_MODE_TOP) {
+    smpat->deleteExistingActiveRulerPointer();
+  }
+  if (smpsk &&
+      m_currentModeRulerPointer != PointerModeRulerOfItem::POINTER_MODE_LEFT) {
+    smpsk->deleteExistingActiveRulerPointer();
+  }
+  if (smpsb &&
+      m_currentModeRulerPointer !=
+          PointerModeRulerOfItem::POINTER_MODE_BOTTOM) {
+    smpsb->deleteExistingActiveRulerPointer();
+  }
+  if (smpsknn &&
+      m_currentModeRulerPointer != PointerModeRulerOfItem::POINTER_MODE_RIGHT) {
+    smpsknn->deleteExistingActiveRulerPointer();
+  }
+  if (smh_a_k &&
+      m_currentModeRulerPointer !=
+          PointerModeRulerOfItem::POINTER_MODE_TOPLEFT) {
+    smh_a_k->deleteExistingActiveRulerPointer();
+  }
+  if (smh_a_knn &&
+      m_currentModeRulerPointer !=
+          PointerModeRulerOfItem::POINTER_MODE_TOPRIGHT) {
+    smh_a_knn->deleteExistingActiveRulerPointer();
+  }
+  if (smh_b_knn &&
+      m_currentModeRulerPointer !=
+          PointerModeRulerOfItem::POINTER_MODE_BOTTOMRIGHT) {
+    smh_b_knn->deleteExistingActiveRulerPointer();
+  }
+  if (smh_b_kr &&
+      m_currentModeRulerPointer !=
+          PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT) {
+    smh_b_kr->deleteExistingActiveRulerPointer();
+  }
 }
 
 void BaseAllItems::setModeOnOffSelection(bool b) {

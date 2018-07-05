@@ -7,6 +7,7 @@
 #include <QPainterPath>
 #include <QPen>
 #include <QTextDocument>
+#include <handlerpointerruler.h>
 
 class SelectionMarkerHandleBase;
 
@@ -66,6 +67,8 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
    
  private:
+  void checkOnlyOnceRulerPointerMode();
+  
   void setModeOnOffSelection(bool b);
   void updateHandlePos();
 
@@ -83,6 +86,7 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   SelectionMarkerHandleBase *smh_b_kr;
   qreal m_rotasi;
   bool m_itemIsRemoved;
+  PointerModeRulerOfItem m_currentModeRulerPointer;
 };
 
 #endif  // BASEALLITEMS_H

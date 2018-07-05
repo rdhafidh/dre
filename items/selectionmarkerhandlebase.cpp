@@ -16,18 +16,7 @@ SelectionMarkerHandleBase::SelectionMarkerHandleBase(QGraphicsItem *parent)
   m_mode_pointer_ruler = PointerModeRulerOfItem::POINTER_MODE_IS_UNDEFINED;
   setOpacity(0.5);
   QObject::connect(&m_show_pointer_timer, &QTimer::timeout, [this]() {
-    if (this->parentItem()) {
-      BaseAllItems *cik = qgraphicsitem_cast<BaseAllItems *>(parentItem());
-      if (cik) {
-        SceneView *scn = qobject_cast<SceneView *>(cik->scene());
-        if (scn && m_hpr.get() != nullptr) {
-          m_hpr.reset(nullptr);
-        }
-        if (scn && m_hpr.get() != nullptr) {
-          m_hpr.reset(nullptr);
-        }
-      }
-    }
+    this->deleteExistingActiveRulerPointer ();
   });
 }
 
@@ -89,6 +78,22 @@ void SelectionMarkerHandleBase::updatePointerModeRuleOfItemLinePos(
   if (m_hpr.get() != nullptr) {
     m_hpr->updateMultiLineCentralPos(pmo);
   }
+}
+
+void SelectionMarkerHandleBase::deleteExistingActiveRulerPointer()
+{ 
+    if(m_show_pointer_timer.isActive ()){
+        m_show_pointer_timer.stop ();
+    }
+    if (this->parentItem()) {
+      BaseAllItems *cik = qgraphicsitem_cast<BaseAllItems *>(parentItem());
+      if (cik) {
+        SceneView *scn = qobject_cast<SceneView *>(cik->scene());
+        if (scn && m_hpr.get() != nullptr) {
+          m_hpr.reset(nullptr);
+        } 
+      }
+    }
 }
 
 void SelectionMarkerHandleBase::paint(QPainter *painter,
