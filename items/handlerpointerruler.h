@@ -31,6 +31,7 @@ class HandlerPointerRuler {
   bool isMultiLineItem() const;
 
   void askToDestroyMultiLineItem();
+  void askToDestroySingleLineItem();
 
  private:
   void buildSingleLineHor(BaseAllItems *fromParent);

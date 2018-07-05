@@ -20,12 +20,10 @@ SelectionMarkerHandleBase::SelectionMarkerHandleBase(QGraphicsItem *parent)
       BaseAllItems *cik = qgraphicsitem_cast<BaseAllItems *>(parentItem());
       if (cik) {
         SceneView *scn = qobject_cast<SceneView *>(cik->scene());
-        if (scn && m_hpr.get() != nullptr && m_hpr->singleLineItem()) {
-          scn->removeItem(m_hpr->singleLineItem());
+        if (scn && m_hpr.get() != nullptr) {
           m_hpr.reset(nullptr);
         }
-        if (scn && m_hpr.get() != nullptr && m_hpr->isMultiLineItem()) {
-          m_hpr->askToDestroyMultiLineItem();
+        if (scn && m_hpr.get() != nullptr) {
           m_hpr.reset(nullptr);
         }
       }

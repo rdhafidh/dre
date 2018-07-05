@@ -26,7 +26,7 @@ HandlerPointerRuler::HandlerPointerRuler(const PointerModeRulerOfItem &mode,
   }
 }
 
-HandlerPointerRuler::~HandlerPointerRuler() { 
+HandlerPointerRuler::~HandlerPointerRuler() {
   switch (m_mode) {
     case PointerModeRulerOfItem::POINTER_MODE_TOPLEFT:
     case PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT:
@@ -38,9 +38,7 @@ HandlerPointerRuler::~HandlerPointerRuler() {
     case PointerModeRulerOfItem::POINTER_MODE_LEFT:
     case PointerModeRulerOfItem::POINTER_MODE_RIGHT:
     case PointerModeRulerOfItem::POINTER_MODE_TOP:
-      if (m_single_line) {
-        delete m_single_line;
-      }
+      askToDestroySingleLineItem();
       break;
   }
 }
@@ -104,6 +102,16 @@ void HandlerPointerRuler::askToDestroyMultiLineItem() {
     }
   }
   m_multiLineMap.clear();
+}
+
+void HandlerPointerRuler::askToDestroySingleLineItem() {
+  if (m_single_line != nullptr) {
+    SceneView *scn = qobject_cast<SceneView *>(m_single_line->scene());
+    if (scn) {
+      scn->removeItem(m_single_line);
+      delete m_single_line;
+    }
+  }
 }
 
 void HandlerPointerRuler::buildSingleLineHor(BaseAllItems *fromParent) {
