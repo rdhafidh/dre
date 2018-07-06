@@ -23,6 +23,9 @@ HandlerPointerRuler::HandlerPointerRuler(const PointerModeRulerOfItem &mode,
     case PointerModeRulerOfItem::POINTER_MODE_TOPRIGHT:
       this->buildMultiLineTopRight(fromParent);
       break;
+    case PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT:
+      this->buildMultiLineLeftBottom(fromParent);
+      break;
   }
 }
 
@@ -70,6 +73,9 @@ void HandlerPointerRuler::updateMultiLineCentralPos(
       break;
     case PointerModeRulerOfItem::POINTER_MODE_TOPRIGHT:
       this->updatePosRightAndTop(pf);
+      break;
+    case PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT:
+      this->updatePosLeftAndBottom(pf);
       break;
   }
 }
@@ -236,6 +242,37 @@ void HandlerPointerRuler::buildMultiLineTopRight(BaseAllItems *fromParent) {
   }
 }
 
+void HandlerPointerRuler::buildMultiLineLeftBottom(BaseAllItems *fromParent) {
+  SceneView *scn = qobject_cast<SceneView *>(fromParent->scene());
+  if (scn) {
+    auto line_left = new QGraphicsLineItem(fromParent);
+    QPen pen;
+    pen.setWidthF(2.0);
+    pen.setColor(QColor("blue"));
+    line_left->setPen(pen);
+    QPointF top;
+    QPointF down;
+    top.setX(fromParent->rect().left());
+    top.setY(-scn->height());
+    down.setX(fromParent->rect().left());
+    down.setY(scn->pageItemDesign()->getRect().bottom());
+    line_left->setLine(QLineF(top, down));
+
+    auto line_bottom = new QGraphicsLineItem(fromParent);
+    line_bottom->setPen(pen);
+    QPointF left;
+    QPointF right;
+    left.setX(-scn->width());
+    left.setY(fromParent->rect().bottom());
+    right.setX(scn->pageItemDesign()->getRect().right());
+    right.setY(fromParent->rect().bottom());
+    line_bottom->setLine(QLineF(left, right));
+
+    m_multiLineMap.insert(std::make_pair("line1", line_left));
+    m_multiLineMap.insert(std::make_pair("line2", line_bottom));
+  }
+}
+
 void HandlerPointerRuler::updatePosCentralAtas(const QPointF &p) {
   if (m_single_line) {
     SceneView *scn = qobject_cast<SceneView *>(m_single_line->scene());
@@ -298,6 +335,24 @@ void HandlerPointerRuler::updatePosRightAndTop(
       QPointF top(lt.second.x(), -scn->height());
       QPointF down(lt.second.x(), scn->pageItemDesign()->getRect().bottom());
       r_s->second->setLine(QLineF(top, down));
+    }
+  }
+}
+
+void HandlerPointerRuler::updatePosLeftAndBottom(
+    const std::pair<QPointF, QPointF> &lt) {
+  auto l_s = m_multiLineMap.find("line1");
+  auto b_s = m_multiLineMap.find("line2");
+  if (l_s != m_multiLineMap.end() && b_s != m_multiLineMap.end()) {
+    SceneView *scn = qobject_cast<SceneView *>(l_s->second->scene());
+    if (scn) {
+      QPointF top(lt.first.x(), -scn->height());
+      QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
+      l_s->second->setLine(QLineF(top, down));
+
+      QPointF left(-scn->width(), lt.second.y());
+      QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
+      b_s->second->setLine(QLineF(left, right));
     }
   }
 }

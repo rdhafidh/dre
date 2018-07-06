@@ -28,7 +28,7 @@ class SelectionMarkerHandleBase : public QGraphicsItem {
   void updatePointerModeRuleOfItemLinePos(const QPointF &pos);
   void updatePointerModeRuleOfItemLinePos(
       const std::pair<QPointF, QPointF> &pmo);
-  
+
   void deleteExistingActiveRulerPointer();
 
  protected:

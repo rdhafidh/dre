@@ -1,13 +1,13 @@
 #ifndef BASEALLITEMS_H
 #define BASEALLITEMS_H
 
+#include <handlerpointerruler.h>
 #include <itemshapebase.h>
 #include <QGraphicsObject>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPen>
 #include <QTextDocument>
-#include <handlerpointerruler.h>
 
 class SelectionMarkerHandleBase;
 
@@ -26,11 +26,11 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
 
   qreal rotasi() const;
   void setRotasi(qreal n);
-  
+
   /*
    * internal state undo stack helper
    * Item dinyatakan valid berada dalam scene hanya ketika
-   * itemIsRemoved()==false , sebaliknya bisa 
+   * itemIsRemoved()==false , sebaliknya bisa
    * jadi item tersebut masih berada dalam suatu internal state di undostack dan
    * jangan diubah ubah atau proses simpan ketika itemIsRemoved()==false.
    * */
@@ -47,7 +47,7 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   void emitRefreshItemProperty();
 
   void rotasiChanged(qreal n);
-  
+
   void forceThisItemSelected(BaseAllItems *item);
  public Q_SLOTS:
   void dumpPropertiInfo();
@@ -65,10 +65,10 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   QVariant itemChange(GraphicsItemChange change,
                       const QVariant &value) Q_DECL_OVERRIDE;
   void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
-   
+
  private:
   void checkOnlyOnceRulerPointerMode();
-  
+
   void setModeOnOffSelection(bool b);
   void updateHandlePos();
 

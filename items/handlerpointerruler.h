@@ -38,14 +38,15 @@ class HandlerPointerRuler {
   void buildSingleLineVert(BaseAllItems *fromParent);
   void buildMultiLineTopLeft(BaseAllItems *fromParent);
   void buildMultiLineTopRight(BaseAllItems *fromParent);
-  
+  void buildMultiLineLeftBottom(BaseAllItems *fromParent);
+
   void updatePosCentralAtas(const QPointF &p);
   void updatePosCentralKiri(const QPointF &p);
   void updatePosCentralBawah(const QPointF &p);
   void updatePosCentralKanan(const QPointF &p);
   void updatePosLeftAndTop(const std::pair<QPointF, QPointF> &lt);
   void updatePosRightAndTop(const std::pair<QPointF, QPointF> &lt);
-  
+  void updatePosLeftAndBottom(const std::pair<QPointF, QPointF> &lt);
 
   QGraphicsLineItem *m_single_line;
   PointerModeRulerOfItem m_mode;

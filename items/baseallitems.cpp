@@ -524,6 +524,12 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     }
     posLeft = round(posLeft / gridsize) * gridsize;
     localrect.setLeft(posLeft);
+
+    // left -> bottom
+    QPointF u_pos_left(posLeft, posLeft);
+    QPointF u_pos_bottom(posBottom, posBottom);
+    smh_b_kr->updatePointerModeRuleOfItemLinePos(
+        std::make_pair(u_pos_left, u_pos_bottom));
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
                      localrect.height());
@@ -698,6 +704,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smh_b_knn->setBrushMarker(QBrush(Qt::green));
     updateHandlePos();
     smh_b_knn->setPos(0, 0);
+    smh_b_knn->setPointerModeRulerOfItemType(
+        PointerModeRulerOfItem::POINTER_MODE_BOTTOMRIGHT);
     smh_b_knn->setVisible(true);
 
     smh_b_kr = new SelectionMarkerHandleBase(this);
@@ -707,6 +715,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
     smh_b_kr->setBrushMarker(QBrush(Qt::green));
     updateHandlePos();
     smh_b_kr->setPos(0, 0);
+    smh_b_kr->setPointerModeRulerOfItemType(
+        PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT);
     smh_b_kr->setVisible(true);
   } else {
     if (scene() && smpat && smpsk && smpsb && smpsknn && smh_a_k && smh_a_knn &&
