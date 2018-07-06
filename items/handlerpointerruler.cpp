@@ -26,6 +26,9 @@ HandlerPointerRuler::HandlerPointerRuler(const PointerModeRulerOfItem &mode,
     case PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT:
       this->buildMultiLineLeftBottom(fromParent);
       break;
+    case PointerModeRulerOfItem::POINTER_MODE_BOTTOMRIGHT:
+      this->buildMultiLineRightBottom(fromParent);
+      break;
   }
 }
 
@@ -76,6 +79,9 @@ void HandlerPointerRuler::updateMultiLineCentralPos(
       break;
     case PointerModeRulerOfItem::POINTER_MODE_BOTTOMLEFT:
       this->updatePosLeftAndBottom(pf);
+      break;
+    case PointerModeRulerOfItem::POINTER_MODE_BOTTOMRIGHT:
+      this->updatePosRightAndBottom(pf);
       break;
   }
 }
@@ -273,6 +279,37 @@ void HandlerPointerRuler::buildMultiLineLeftBottom(BaseAllItems *fromParent) {
   }
 }
 
+void HandlerPointerRuler::buildMultiLineRightBottom(BaseAllItems *fromParent) {
+  SceneView *scn = qobject_cast<SceneView *>(fromParent->scene());
+  if (scn) {
+    auto line_right = new QGraphicsLineItem(fromParent);
+    QPen pen;
+    pen.setWidthF(2.0);
+    pen.setColor(QColor("blue"));
+    line_right->setPen(pen);
+    QPointF top;
+    QPointF down;
+    top.setX(fromParent->rect().right());
+    top.setY(-scn->height());
+    down.setX(fromParent->rect().right());
+    down.setY(scn->pageItemDesign()->getRect().bottom());
+    line_right->setLine(QLineF(top, down));
+
+    auto line_bottom = new QGraphicsLineItem(fromParent);
+    line_bottom->setPen(pen);
+    QPointF left;
+    QPointF right;
+    left.setX(-scn->width());
+    left.setY(fromParent->rect().bottom());
+    right.setX(scn->pageItemDesign()->getRect().right());
+    right.setY(fromParent->rect().bottom());
+    line_bottom->setLine(QLineF(left, right));
+
+    m_multiLineMap.insert(std::make_pair("line1", line_right));
+    m_multiLineMap.insert(std::make_pair("line2", line_bottom));
+  }
+}
+
 void HandlerPointerRuler::updatePosCentralAtas(const QPointF &p) {
   if (m_single_line) {
     SceneView *scn = qobject_cast<SceneView *>(m_single_line->scene());
@@ -305,54 +342,83 @@ void HandlerPointerRuler::updatePosCentralKanan(const QPointF &p) {
 
 void HandlerPointerRuler::updatePosLeftAndTop(
     const std::pair<QPointF, QPointF> &lt) {
-  auto l_s = m_multiLineMap.find("line1");
-  auto t_s = m_multiLineMap.find("line2");
-  if (l_s != m_multiLineMap.end() && t_s != m_multiLineMap.end()) {
-    SceneView *scn = qobject_cast<SceneView *>(l_s->second->scene());
-    if (scn) {
-      QPointF top(lt.first.x(), -scn->height());
-      QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
-      l_s->second->setLine(QLineF(top, down));
+  auto pair = getPairMultiLineItem();
+  if (!pair.first || !pair.second) {
+    return;
+  }
+  SceneView *scn = qobject_cast<SceneView *>(pair.second->scene());
+  if (scn) {
+    QPointF top(lt.first.x(), -scn->height());
+    QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
+    pair.first->setLine(QLineF(top, down));
 
-      QPointF left(-scn->width(), lt.second.y());
-      QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
-      t_s->second->setLine(QLineF(left, right));
-    }
+    QPointF left(-scn->width(), lt.second.y());
+    QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
+    pair.second->setLine(QLineF(left, right));
   }
 }
 
 void HandlerPointerRuler::updatePosRightAndTop(
     const std::pair<QPointF, QPointF> &lt) {
-  auto t_s = m_multiLineMap.find("line1");
-  auto r_s = m_multiLineMap.find("line2");
-  if (t_s != m_multiLineMap.end() && r_s != m_multiLineMap.end()) {
-    SceneView *scn = qobject_cast<SceneView *>(t_s->second->scene());
-    if (scn) {
-      QPointF left(-scn->width(), lt.first.y());
-      QPointF right(scn->pageItemDesign()->getRect().right(), lt.first.y());
-      t_s->second->setLine(QLineF(left, right));
+  auto pair = getPairMultiLineItem();
+  if (!pair.first || !pair.second) {
+    return;
+  }
+  SceneView *scn = qobject_cast<SceneView *>(pair.second->scene());
+  if (scn) {
+    QPointF left(-scn->width(), lt.first.y());
+    QPointF right(scn->pageItemDesign()->getRect().right(), lt.first.y());
+    pair.first->setLine(QLineF(left, right));
 
-      QPointF top(lt.second.x(), -scn->height());
-      QPointF down(lt.second.x(), scn->pageItemDesign()->getRect().bottom());
-      r_s->second->setLine(QLineF(top, down));
-    }
+    QPointF top(lt.second.x(), -scn->height());
+    QPointF down(lt.second.x(), scn->pageItemDesign()->getRect().bottom());
+    pair.second->setLine(QLineF(top, down));
   }
 }
 
 void HandlerPointerRuler::updatePosLeftAndBottom(
     const std::pair<QPointF, QPointF> &lt) {
-  auto l_s = m_multiLineMap.find("line1");
-  auto b_s = m_multiLineMap.find("line2");
-  if (l_s != m_multiLineMap.end() && b_s != m_multiLineMap.end()) {
-    SceneView *scn = qobject_cast<SceneView *>(l_s->second->scene());
-    if (scn) {
-      QPointF top(lt.first.x(), -scn->height());
-      QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
-      l_s->second->setLine(QLineF(top, down));
-
-      QPointF left(-scn->width(), lt.second.y());
-      QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
-      b_s->second->setLine(QLineF(left, right));
-    }
+  auto pair = getPairMultiLineItem();
+  if (!pair.first || !pair.second) {
+    return;
   }
+  SceneView *scn = qobject_cast<SceneView *>(pair.second->scene());
+  if (scn) {
+    QPointF top(lt.first.x(), -scn->height());
+    QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
+    pair.first->setLine(QLineF(top, down));
+
+    QPointF left(-scn->width(), lt.second.y());
+    QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
+    pair.second->setLine(QLineF(left, right));
+  }
+}
+
+void HandlerPointerRuler::updatePosRightAndBottom(
+    const std::pair<QPointF, QPointF> &lt) {
+  auto pair = getPairMultiLineItem();
+  if (!pair.first || !pair.second) {
+    return;
+  }
+  SceneView *scn = qobject_cast<SceneView *>(pair.second->scene());
+  if (scn) {
+    QPointF top(lt.first.x(), -scn->height());
+    QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
+    pair.first->setLine(QLineF(top, down));
+
+    QPointF left(-scn->width(), lt.second.y());
+    QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
+    pair.second->setLine(QLineF(left, right));
+  }
+}
+
+std::pair<QGraphicsLineItem *, QGraphicsLineItem *>
+HandlerPointerRuler::getPairMultiLineItem() {
+  auto _first = m_multiLineMap.find("line1");
+  auto _second = m_multiLineMap.find("line2");
+  if (_first != m_multiLineMap.end() && _second != m_multiLineMap.end() &&
+      _first->second != nullptr && _second->second != nullptr) {
+    return std::make_pair(_first->second, _second->second);
+  }
+  return std::make_pair(nullptr, nullptr);
 }

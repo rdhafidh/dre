@@ -364,6 +364,9 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     }
     posRight = round(posRight / gridsize) * gridsize;
     localrect.setRight(posRight);
+
+    smh_b_knn->updatePointerModeRuleOfItemLinePos(std::make_pair(
+        QPointF(posRight, posRight), QPointF(posBottom, posBottom)));
     SceneView *scn = qobject_cast<SceneView *>(this->scene());
     QRectF localgeom(pos().x(), pos().y(), localrect.width(),
                      localrect.height());
