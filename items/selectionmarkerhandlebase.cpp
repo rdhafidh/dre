@@ -81,14 +81,8 @@ void SelectionMarkerHandleBase::deleteExistingActiveRulerPointer() {
   if (m_show_pointer_timer.isActive()) {
     m_show_pointer_timer.stop();
   }
-  if (this->parentItem()) {
-    BaseAllItems *cik = qgraphicsitem_cast<BaseAllItems *>(parentItem());
-    if (cik) {
-      SceneView *scn = qobject_cast<SceneView *>(cik->scene());
-      if (scn && m_hpr.get() != nullptr) {
-        m_hpr.reset(nullptr);
-      }
-    }
+  if (m_hpr.get() != nullptr) {
+    m_hpr.reset(nullptr);
   }
 }
 
