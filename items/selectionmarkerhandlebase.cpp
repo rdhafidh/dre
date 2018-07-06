@@ -20,9 +20,7 @@ SelectionMarkerHandleBase::SelectionMarkerHandleBase(QGraphicsItem *parent)
 }
 
 SelectionMarkerHandleBase::~SelectionMarkerHandleBase() {
-  if (m_show_pointer_timer.isActive()) {
-    m_show_pointer_timer.stop();
-  }
+  this->deleteExistingActiveRulerPointer();
 }
 
 void SelectionMarkerHandleBase::setItemHandlePosType(HandlePosType type) {
