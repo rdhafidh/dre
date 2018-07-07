@@ -2,4 +2,7 @@
     <qresource prefix="/">
         <file>image/empty_kotak.png</file>
     </qresource>
+    <qresource prefix="/db">
+        <file>assets/template_report.report</file>
+    </qresource>
 </RCC>
