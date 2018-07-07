@@ -50,7 +50,8 @@ class HandlerPointerRuler {
   void updatePosLeftAndBottom(const std::pair<QPointF, QPointF> &lt);
   void updatePosRightAndBottom(const std::pair<QPointF, QPointF> &lt);
 
-  std::pair<QGraphicsLineItem *, QGraphicsLineItem *> getPairMultiLineItem();
+  std::pair<QGraphicsLineItem *, QGraphicsLineItem *> getPairMultiLineItem()
+      const;
 
   QGraphicsLineItem *m_single_line;
   PointerModeRulerOfItem m_mode;

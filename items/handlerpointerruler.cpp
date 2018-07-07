@@ -304,7 +304,6 @@ void HandlerPointerRuler::buildMultiLineRightBottom(BaseAllItems *fromParent) {
     right.setX(scn->pageItemDesign()->getRect().right());
     right.setY(fromParent->rect().bottom());
     line_bottom->setLine(QLineF(left, right));
-
     m_multiLineMap.insert(std::make_pair("line1", line_right));
     m_multiLineMap.insert(std::make_pair("line2", line_bottom));
   }
@@ -405,7 +404,6 @@ void HandlerPointerRuler::updatePosRightAndBottom(
     QPointF top(lt.first.x(), -scn->height());
     QPointF down(lt.first.x(), scn->pageItemDesign()->getRect().bottom());
     pair.first->setLine(QLineF(top, down));
-
     QPointF left(-scn->width(), lt.second.y());
     QPointF right(scn->pageItemDesign()->getRect().right(), lt.second.y());
     pair.second->setLine(QLineF(left, right));
@@ -413,7 +411,7 @@ void HandlerPointerRuler::updatePosRightAndBottom(
 }
 
 std::pair<QGraphicsLineItem *, QGraphicsLineItem *>
-HandlerPointerRuler::getPairMultiLineItem() {
+HandlerPointerRuler::getPairMultiLineItem() const {
   auto _first = m_multiLineMap.find("line1");
   auto _second = m_multiLineMap.find("line2");
   if (_first != m_multiLineMap.end() && _second != m_multiLineMap.end() &&
