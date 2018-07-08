@@ -36,6 +36,7 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
    * */
   void setItemIsRemoved(bool e);
   bool itemIsRemoved() const;
+  void checkOnlyOnceRulerPointerMode();
 
  Q_SIGNALS:
   /*
@@ -67,8 +68,6 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
 
  private:
-  void checkOnlyOnceRulerPointerMode();
-
   void setModeOnOffSelection(bool b);
   void updateHandlePos();
 

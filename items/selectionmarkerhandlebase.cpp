@@ -117,7 +117,7 @@ void SelectionMarkerHandleBase::mousePressEvent(
 #ifdef DEBUGGING_ENABLED
       qDebug() << Q_FUNC_INFO << "called";
 #endif
-      cik->mousePressEvent(event);
+      cik->checkOnlyOnceRulerPointerMode();
     }
     handlePointerRulerFromCursorType(m_mode_pointer_ruler);
   }
