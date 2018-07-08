@@ -73,7 +73,7 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
 
   bool modeselect = false;
   ItemConst::Tipe m_tipe;
-  int markerSize = 6;
+  int markerSize = 9;
   ItemConst::ModeItemDesignOrPreview m_modedesignpreview;
   SelectionMarkerHandleBase *smpat;
   SelectionMarkerHandleBase *smpsk;
