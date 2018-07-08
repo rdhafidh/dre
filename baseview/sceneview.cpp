@@ -125,8 +125,8 @@ void SceneView::removeKindsItem(BaseAllItems *item) {
 
 void SceneView::addKindsItem(BaseAllItems *item) {
   if (item == nullptr) return;
-
-  addItem(item);
+  item->setParent(pageitemdsgn);
+  item->setParentItem(pageitemdsgn);
   item->setItemIsRemoved(false);
   item->setSelected(true);
   this->itemAddedAgainToScene(item);
