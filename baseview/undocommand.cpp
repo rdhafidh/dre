@@ -104,6 +104,9 @@ void XCommands::InsertItemCommand::redo() {
         newitem = qobject_cast<SceneView *>(scene)->createImageitem(
             QPointF(10, 10), QSizeF(200, 300));
         break;
+    case ItemConst::Tipe::GARIS:
+        newitem=qobject_cast<SceneView *>(scene)->createLineItem(QPointF(0,20),QSizeF(180,20));
+        break;
       default:
         break;
     }

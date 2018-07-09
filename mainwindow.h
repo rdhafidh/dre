@@ -5,6 +5,7 @@
 #include <QList>
 #include <QMainWindow>
 #include <QPair>
+#include <constvalue.h>
 
 namespace Ui {
 class MainWindow;
@@ -35,10 +36,24 @@ class MainWindow : public QMainWindow {
 
   void on_actionTambah_Gambar_triggered();
 
- private:
+  void on_actionTambahLine_triggered();
+  
+  void on_actionTambahSegitiga_triggered();
+  
+  void on_actionTambahBulat_triggered();
+  
+  void on_actionTambahKotak_triggered();
+  
+private:
   void privAddSampleText();
   void privAddSampleImage();
   void privHapusSemuaItem();
+  void privAddShapeLine();
+  void privAddShapeTriangle();
+  void privAddShapeEllipse();
+  void privAddShapeRectangle();
+  
+  void createItemBase(const ItemConst::Tipe &ty);
   void privExit();
 
   Ui::MainWindow *ui;

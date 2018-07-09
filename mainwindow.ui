@@ -73,9 +73,18 @@
     <property name="title">
      <string>Item</string>
     </property>
+    <widget class="QMenu" name="menuTambah_Shape">
+     <property name="title">
+      <string>Tambah Shape</string>
+     </property>
+     <addaction name="actionTambahLine"/>
+     <addaction name="actionTambahSegitiga"/>
+     <addaction name="actionTambahBulat"/>
+     <addaction name="actionTambahKotak"/>
+    </widget>
     <addaction name="actionTambah_teks"/>
     <addaction name="actionTambah_Gambar"/>
-    <addaction name="actionTambah_Shape"/>
+    <addaction name="menuTambah_Shape"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -142,9 +151,24 @@
     <string>Tambah Gambar</string>
    </property>
   </action>
-  <action name="actionTambah_Shape">
+  <action name="actionTambahLine">
    <property name="text">
-    <string>Tambah Shape</string>
+    <string>Line</string>
+   </property>
+  </action>
+  <action name="actionTambahSegitiga">
+   <property name="text">
+    <string>Segitiga</string>
+   </property>
+  </action>
+  <action name="actionTambahBulat">
+   <property name="text">
+    <string>Bulat</string>
+   </property>
+  </action>
+  <action name="actionTambahKotak">
+   <property name="text">
+    <string>Kotak</string>
    </property>
   </action>
  </widget>

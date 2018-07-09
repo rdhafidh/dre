@@ -17,7 +17,7 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
       QRectF geometry READ geometry WRITE setGeometry NOTIFY geometryChanged)
   Q_PROPERTY(qreal rotasi READ rotasi WRITE setRotasi NOTIFY rotasiChanged)
  public:
-  friend class SelectionMarkerHandleBase;
+  friend class SelectionMarkerHandleBase; 
   explicit BaseAllItems(QGraphicsItem *parent = 0);
   ~BaseAllItems();
 
@@ -68,6 +68,7 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
 
  private:
+  void setModeOnOffLineSelection(bool b);
   void setModeOnOffSelection(bool b);
   void updateHandlePos();
 

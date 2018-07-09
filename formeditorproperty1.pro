@@ -41,7 +41,8 @@ SOURCES += main.cpp\
     formdesign.cpp \
     tabwidgetutama.cpp \
     items/ruleritem.cpp \
-    items/handlerpointerruler.cpp
+    items/handlerpointerruler.cpp \
+    items/lineitem.cpp
 
 HEADERS  += mainwindow.h \
     tabwidgetutama.h \
@@ -58,7 +59,8 @@ HEADERS  += mainwindow.h \
     baseview/undocommand.h \
     formdesign.h \
     items/ruleritem.h \
-    items/handlerpointerruler.h
+    items/handlerpointerruler.h \
+    items/lineitem.h
 
 FORMS    += mainwindow.ui \
     delegates/propertyeditor/imagefilesetpropertyeditor.ui \

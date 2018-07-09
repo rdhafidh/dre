@@ -51,7 +51,9 @@ void BaseAllItems::setGeometry(const QRectF &geom) {
   if (localgeom == geom) return;
 
   prepareGeometryChange();
-  setPos(geom.x(), geom.y());
+  if (getItemType() != ItemConst::Tipe::GARIS) {
+    setPos(geom.x(), geom.y());
+  }
   //  localrect.setX (geom.x ());
   //  localrect.setY (geom.y ());
   //  localrect.setWidth (geom.width ());
@@ -102,7 +104,9 @@ void BaseAllItems::paint(QPainter *painter,
                          QWidget *widget) {
   Q_UNUSED(option)
   Q_UNUSED(widget)
-  ItemShapeBase::paintShape(painter);
+  if (getItemType() != ItemConst::Tipe::GARIS) {
+    ItemShapeBase::paintShape(painter);
+  }
 }
 
 void BaseAllItems::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -565,7 +569,11 @@ void BaseAllItems::hoverMoveEvent(QGraphicsSceneHoverEvent *event) {
 QVariant BaseAllItems::itemChange(QGraphicsItem::GraphicsItemChange change,
                                   const QVariant &value) {
   if (change == QGraphicsItem::ItemSelectedChange) {
-    this->setModeOnOffSelection(value.toBool());
+    if (getItemType() == ItemConst::Tipe::GARIS) {
+      setModeOnOffLineSelection(value.toBool());
+    } else {
+      this->setModeOnOffSelection(value.toBool());
+    }
   }
   if (change == QGraphicsItem::ItemPositionHasChanged) {
     this->emitRefreshItemProperty();
@@ -588,6 +596,29 @@ void BaseAllItems::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
   if (!isSelected()) this->forceThisItemSelected(this);
 
   this->createContextMenu(event);
+}
+
+void BaseAllItems::setModeOnOffLineSelection(bool b) {
+  modeselect = b;
+  if (b && !smpsk && !smpsknn) {
+    // TODO draw handle
+    /*  smpsknn = new SelectionMarkerHandleBase(this);
+      smpsknn->setCursorType(Qt::SizeAllCursor);
+      smpsknn->setForParentItemType(getItemType());
+      updateHandlePos();
+      smpsknn->setSelectionMarkerSize(markerSize);
+      smpsknn->setBrushMarker(QBrush(Qt::green));
+      smpsknn->setPos(0, 0);
+      smpsknn->setPointerModeRulerOfItemType(
+          PointerModeRulerOfItem::POINTER_MODE_IS_UNDEFINED);
+      smpsknn->setVisible(true);*/
+  } else {
+    if (scene() && smpsk && smpsknn) {
+      /* scene()->removeItem(smpsknn);
+       delete smpsknn;
+       smpsknn = nullptr;*/
+    }
+  }
 }
 
 void BaseAllItems::checkOnlyOnceRulerPointerMode() {
@@ -760,6 +791,11 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
 }
 
 void BaseAllItems::updateHandlePos() {
+  if (getItemType() == ItemConst::Tipe::GARIS && smpsk && smpsknn) {
+    // TODO positionate handle
+    return;
+  }
+
   if (!smpat || !smpsk || !smpsb || !smpsknn || !smh_a_k || !smh_a_knn ||
       !smh_b_knn || !smh_b_kr)
     return;

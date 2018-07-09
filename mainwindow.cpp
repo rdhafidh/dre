@@ -77,30 +77,10 @@ MainWindow::~MainWindow() {
   delete ui;
 }
 
-void MainWindow::privAddSampleText() {
-  auto widget = ui->tabWidget->currentWidget();
-  if (widget == nullptr) return;
-
-  FormDesign *page = qobject_cast<FormDesign *>(widget);
-  if (page == nullptr) return;
-
-  page->getScene()->undostack()->push(new XCommands::InsertItemCommand(
-      page->getScene(), ItemConst::Tipe::TEKS));
-  act_redo->setEnabled(page->getScene()->undostack()->canRedo());
-  act_undo->setEnabled(page->getScene()->undostack()->canUndo());
-}
+void MainWindow::privAddSampleText() { createItemBase(ItemConst::Tipe::TEKS); }
 
 void MainWindow::privAddSampleImage() {
-  auto widget = ui->tabWidget->currentWidget();
-  if (widget == nullptr) return;
-
-  FormDesign *page = qobject_cast<FormDesign *>(widget);
-  if (page == nullptr) return;
-
-  page->getScene()->undostack()->push(new XCommands::InsertItemCommand(
-      page->getScene(), ItemConst::Tipe::GAMBAR));
-  act_redo->setEnabled(page->getScene()->undostack()->canRedo());
-  act_undo->setEnabled(page->getScene()->undostack()->canUndo());
+  createItemBase(ItemConst::Tipe::GAMBAR);
 }
 
 void MainWindow::privHapusSemuaItem() {
@@ -111,6 +91,27 @@ void MainWindow::privHapusSemuaItem() {
   if (page == nullptr) return;
 
   page->getScene()->ClearAllItems();
+}
+
+void MainWindow::privAddShapeLine() { createItemBase(ItemConst::Tipe::GARIS); }
+
+void MainWindow::privAddShapeTriangle() {}
+
+void MainWindow::privAddShapeEllipse() {}
+
+void MainWindow::privAddShapeRectangle() {}
+
+void MainWindow::createItemBase(const ItemConst::Tipe &ty) {
+  auto widget = ui->tabWidget->currentWidget();
+  if (widget == nullptr) return;
+
+  FormDesign *page = qobject_cast<FormDesign *>(widget);
+  if (page == nullptr) return;
+
+  page->getScene()->undostack()->push(
+      new XCommands::InsertItemCommand(page->getScene(), ty));
+  act_redo->setEnabled(page->getScene()->undostack()->canRedo());
+  act_undo->setEnabled(page->getScene()->undostack()->canUndo());
 }
 
 void MainWindow::privExit() { close(); }
@@ -129,3 +130,17 @@ void MainWindow::on_actionTutup_Aplikasi_triggered() { this->privExit(); }
 void MainWindow::on_actionTambah_teks_triggered() { privAddSampleText(); }
 
 void MainWindow::on_actionTambah_Gambar_triggered() { privAddSampleImage(); }
+
+void MainWindow::on_actionTambahLine_triggered() { this->privAddShapeLine(); }
+
+void MainWindow::on_actionTambahSegitiga_triggered() {
+  this->privAddShapeTriangle();
+}
+
+void MainWindow::on_actionTambahBulat_triggered() {
+  this->privAddShapeEllipse();
+}
+
+void MainWindow::on_actionTambahKotak_triggered() {
+  this->privAddShapeRectangle();
+}

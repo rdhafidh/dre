@@ -21,6 +21,7 @@ class SceneView : public QGraphicsScene {
 
   BaseAllItems *createTextitem(const QPointF &topleft, const QSizeF &size);
   BaseAllItems *createImageitem(const QPointF &topleft, const QSizeF &size);
+  BaseAllItems *createLineItem(const QPointF &topleft, const QSizeF &size);
   BaseAllItems *createShapeRectangleitem(const QPointF &topleft,
                                          const QSizeF &size);
 

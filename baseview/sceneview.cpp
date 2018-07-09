@@ -6,6 +6,7 @@
 #include <items/textitem.h>
 #include <pageitem.h>
 #include <ruleritem.h>
+#include <lineitem.h>
 #ifdef DEBUGGING_ENABLED
 #include <QDebug>
 #endif
@@ -65,6 +66,22 @@ BaseAllItems *SceneView::createImageitem(const QPointF &topleft,
           &SceneView::updateForceThatItemSelected);
   m_items << img;
   return (BaseAllItems *)img;
+}
+
+BaseAllItems *SceneView::createLineItem(const QPointF &topleft,
+                                        const QSizeF &size)
+{
+    LineItem *ln=new LineItem;
+    ln->setParent(pageitemdsgn);
+    ln->setParentItem(pageitemdsgn);  
+    ln->drawLine (QLineF(topleft,QPointF(size.width (),size.height ())));
+    ln->setPos (20,30);
+    connect(ln, &LineItem::emitRefreshItemProperty, m_pagedesign,
+            &FormDesign::handleItemPropertyUpdate);
+    connect(ln, &LineItem::forceThisItemSelected, this,
+            &SceneView::updateForceThatItemSelected);
+    m_items <<ln;
+    return (BaseAllItems*)ln;
 }
 
 BaseAllItems *SceneView::createShapeRectangleitem(const QPointF &topleft,
