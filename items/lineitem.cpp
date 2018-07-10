@@ -16,6 +16,8 @@ void LineItem::drawLine(const QLineF &line) {
     return;
   }
   m_currentLine = line;
+  auto path = shape();
+  setProperty ("geometry",path.controlPointRect());
   update();
 }
 
@@ -46,8 +48,7 @@ QColor LineItem::getLineColor() const { return m_color; }
 void LineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
   painter->save();
-  auto path = shape();
-  setRect(path.controlPointRect());
+  auto path = shape(); 
   painter->setBrush(QBrush(m_color));
   painter->drawPath(path);
   painter->restore();

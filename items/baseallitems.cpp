@@ -51,9 +51,7 @@ void BaseAllItems::setGeometry(const QRectF &geom) {
   if (localgeom == geom) return;
 
   prepareGeometryChange();
-  if (getItemType() != ItemConst::Tipe::GARIS) {
-    setPos(geom.x(), geom.y());
-  }
+  setPos(geom.x(), geom.y());
   //  localrect.setX (geom.x ());
   //  localrect.setY (geom.y ());
   //  localrect.setWidth (geom.width ());

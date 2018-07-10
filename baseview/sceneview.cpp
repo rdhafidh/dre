@@ -74,8 +74,7 @@ BaseAllItems *SceneView::createLineItem(const QPointF &topleft,
     LineItem *ln=new LineItem;
     ln->setParent(pageitemdsgn);
     ln->setParentItem(pageitemdsgn);  
-    ln->drawLine (QLineF(topleft,QPointF(size.width (),size.height ())));
-    ln->setPos (20,30);
+    ln->drawLine (QLineF(topleft,QPointF(size.width (),size.height ()))); 
     connect(ln, &LineItem::emitRefreshItemProperty, m_pagedesign,
             &FormDesign::handleItemPropertyUpdate);
     connect(ln, &LineItem::forceThisItemSelected, this,
