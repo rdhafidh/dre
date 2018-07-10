@@ -3,21 +3,22 @@
 
 #include <handlerpointerruler.h>
 #include <itemshapebase.h>
+#include <selectionlineitemhandler.h>
 #include <QGraphicsObject>
 #include <QPainter>
 #include <QPainterPath>
 #include <QPen>
 #include <QTextDocument>
+#include <memory>
 
 class SelectionMarkerHandleBase;
-
 class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   Q_OBJECT
   Q_PROPERTY(
       QRectF geometry READ geometry WRITE setGeometry NOTIFY geometryChanged)
   Q_PROPERTY(qreal rotasi READ rotasi WRITE setRotasi NOTIFY rotasiChanged)
  public:
-  friend class SelectionMarkerHandleBase; 
+  friend class SelectionMarkerHandleBase;
   explicit BaseAllItems(QGraphicsItem *parent = 0);
   ~BaseAllItems();
 
@@ -46,10 +47,12 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
    * */
   void geometryChanged(const QRectF &geom);
   void emitRefreshItemProperty();
-
   void rotasiChanged(qreal n);
-
   void forceThisItemSelected(BaseAllItems *item);
+
+  void askThisLineRightSideToMove(const QPointF &toPos, const QPointF &lastPos);
+  void askThisLineLeftSideToMove(const QPointF &toPos, const QPointF &lastPos);
+
  public Q_SLOTS:
   void dumpPropertiInfo();
 
@@ -84,6 +87,8 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   SelectionMarkerHandleBase *smh_a_knn;
   SelectionMarkerHandleBase *smh_b_knn;
   SelectionMarkerHandleBase *smh_b_kr;
+  std::unique_ptr<SelectionLineItemHandler> m_h_l_knn;
+  std::unique_ptr<SelectionLineItemHandler> m_h_l_kr;
   qreal m_rotasi;
   bool m_itemIsRemoved;
   PointerModeRulerOfItem m_currentModeRulerPointer;

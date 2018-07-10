@@ -42,7 +42,8 @@ SOURCES += main.cpp\
     tabwidgetutama.cpp \
     items/ruleritem.cpp \
     items/handlerpointerruler.cpp \
-    items/lineitem.cpp
+    items/lineitem.cpp \
+    items/selectionlineitemhandler.cpp
 
 HEADERS  += mainwindow.h \
     tabwidgetutama.h \
@@ -60,7 +61,8 @@ HEADERS  += mainwindow.h \
     formdesign.h \
     items/ruleritem.h \
     items/handlerpointerruler.h \
-    items/lineitem.h
+    items/lineitem.h \
+    items/selectionlineitemhandler.h
 
 FORMS    += mainwindow.ui \
     delegates/propertyeditor/imagefilesetpropertyeditor.ui \

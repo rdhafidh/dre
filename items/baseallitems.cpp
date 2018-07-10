@@ -3,9 +3,7 @@
 #include <sceneview.h>
 #include <undocommand.h>
 #include <QApplication>
-#ifdef DEBUGGING_ENABLED
 #include <QDebug>
-#endif
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QMetaObject>
@@ -51,7 +49,6 @@ void BaseAllItems::setGeometry(const QRectF &geom) {
   if (localgeom == geom) return;
 
   prepareGeometryChange();
-  setPos(geom.x(), geom.y());
   //  localrect.setX (geom.x ());
   //  localrect.setY (geom.y ());
   //  localrect.setWidth (geom.width ());
@@ -77,7 +74,6 @@ void BaseAllItems::setItemIsRemoved(bool e) { m_itemIsRemoved = e; }
 bool BaseAllItems::itemIsRemoved() const { return m_itemIsRemoved; }
 
 void BaseAllItems::dumpPropertiInfo() {
-#ifdef DEBUGGING_ENABLED
   const QMetaObject *metaObject = this->metaObject();
   for (int i = 0; i < metaObject->propertyCount(); ++i) {
     auto prop = QString::fromLatin1(metaObject->property(i).name());
@@ -85,8 +81,6 @@ void BaseAllItems::dumpPropertiInfo() {
              << "isenum" << metaObject->property(i).isEnumType() << "value "
              << property(prop.toStdString().c_str());
   }
-  qDebug() << "localrect" << localrect;
-#endif
 }
 
 QRectF BaseAllItems::boundingRect() const { return this->rect(); }
@@ -127,6 +121,22 @@ void BaseAllItems::mouseMoveEvent(QGraphicsSceneMouseEvent *event) {
     return false;
   };
 
+  if (isSelected() && getItemType() == ItemConst::Tipe::GARIS &&
+      m_h_l_knn.get() != nullptr && m_h_l_knn->isModeEdgeMove()) {
+    m_h_l_knn->setRect(QRectF(event->pos().x() - markerSize,
+                              event->pos().y() - markerSize, markerSize * 2,
+                              markerSize * 2));
+    this->askThisLineRightSideToMove(event->pos(), event->lastPos());
+    return;
+  }
+  if (isSelected() && getItemType() == ItemConst::Tipe::GARIS &&
+      m_h_l_kr.get() != nullptr && m_h_l_kr->isModeEdgeMove()) {
+    m_h_l_kr->setRect(QRectF(event->pos().x() - markerSize,
+                             event->pos().y() - markerSize, markerSize * 2,
+                             markerSize * 2));
+    this->askThisLineLeftSideToMove(event->pos(), event->lastPos());
+    return;
+  }
   if (isSelected() && isalllHandelNotNull() && smpat->isModeResize()) {
     qreal minheight = smpat->rect().height() * 2;
 #ifdef DEBUGGING_ENABLED
@@ -598,23 +608,23 @@ void BaseAllItems::contextMenuEvent(QGraphicsSceneContextMenuEvent *event) {
 
 void BaseAllItems::setModeOnOffLineSelection(bool b) {
   modeselect = b;
-  if (b && !smpsk && !smpsknn) {
-    // TODO draw handle
-    /*  smpsknn = new SelectionMarkerHandleBase(this);
-      smpsknn->setCursorType(Qt::SizeAllCursor);
-      smpsknn->setForParentItemType(getItemType());
-      updateHandlePos();
-      smpsknn->setSelectionMarkerSize(markerSize);
-      smpsknn->setBrushMarker(QBrush(Qt::green));
-      smpsknn->setPos(0, 0);
-      smpsknn->setPointerModeRulerOfItemType(
-          PointerModeRulerOfItem::POINTER_MODE_IS_UNDEFINED);
-      smpsknn->setVisible(true);*/
+  QLineF currLine = property("line").toLineF();
+  if (b && !m_h_l_knn.get() && !m_h_l_kr.get() && !currLine.isNull()) {
+    m_h_l_kr.reset(new SelectionLineItemHandler(this));
+    m_h_l_kr->setRect(QRectF(currLine.p1().x() - markerSize,
+                             currLine.p1().y() - markerSize, markerSize * 2,
+                             markerSize * 2));
+
+    m_h_l_knn.reset(new SelectionLineItemHandler(this));
+    m_h_l_knn->setRect(QRectF(currLine.p2().x() - markerSize,
+                              currLine.p2().y() - markerSize, markerSize * 2,
+                              markerSize * 2));
   } else {
-    if (scene() && smpsk && smpsknn) {
-      /* scene()->removeItem(smpsknn);
-       delete smpsknn;
-       smpsknn = nullptr;*/
+    if (scene() && m_h_l_knn.get() != nullptr && m_h_l_kr.get() != nullptr) {
+      scene()->removeItem(m_h_l_knn.get());
+      m_h_l_knn.reset(nullptr);
+      scene()->removeItem(m_h_l_kr.get());
+      m_h_l_kr.reset(nullptr);
     }
   }
 }
@@ -788,12 +798,8 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
   }
 }
 
-void BaseAllItems::updateHandlePos() {
-  if (getItemType() == ItemConst::Tipe::GARIS && smpsk && smpsknn) {
-    // TODO positionate handle
-    return;
-  }
-
+void BaseAllItems::updateHandlePos() { 
+    
   if (!smpat || !smpsk || !smpsb || !smpsknn || !smh_a_k || !smh_a_knn ||
       !smh_b_knn || !smh_b_kr)
     return;

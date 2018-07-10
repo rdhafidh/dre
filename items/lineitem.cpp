@@ -7,6 +7,10 @@ LineItem::LineItem(QGraphicsItem *parent) : BaseAllItems(parent) {
   setItemType(ItemConst::Tipe::GARIS);
   m_color = QColor("black");
   m_lineWidth = 3.0;
+  connect(this, SIGNAL(askThisLineRightSideToMove(QPointF, QPointF)), this,
+          SLOT(updateRightSideLineToMove(QPointF, QPointF)));
+  connect(this, SIGNAL(askThisLineLeftSideToMove(QPointF, QPointF)), this,
+          SLOT(updateLeftSideLineToMove(QPointF, QPointF)));
 }
 
 LineItem::~LineItem() {}
@@ -17,7 +21,7 @@ void LineItem::drawLine(const QLineF &line) {
   }
   m_currentLine = line;
   auto path = shape();
-  setProperty ("geometry",path.controlPointRect());
+  setProperty("geometry", path.controlPointRect());
   update();
 }
 
@@ -48,7 +52,7 @@ QColor LineItem::getLineColor() const { return m_color; }
 void LineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
   painter->save();
-  auto path = shape(); 
+  auto path = shape();
   painter->setBrush(QBrush(m_color));
   painter->drawPath(path);
   painter->restore();
@@ -79,4 +83,16 @@ void LineItem::createContextMenu(QGraphicsSceneContextMenuEvent *event) {
   } else if (selectedAction == dumpPropertiAction) {
     this->dumpPropertiInfo();
   }
+}
+
+void LineItem::updateRightSideLineToMove(const QPointF &to,
+                                         const QPointF &lastpos) {
+  Q_UNUSED(lastpos)
+  drawLine(QLineF(m_currentLine.p1(), to));
+}
+
+void LineItem::updateLeftSideLineToMove(const QPointF &to,
+                                        const QPointF &lastpos) {
+  Q_UNUSED(lastpos)
+  drawLine(QLineF(to, m_currentLine.p2()));
 }

@@ -5,8 +5,8 @@
 #include <items/imageitem.h>
 #include <items/textitem.h>
 #include <pageitem.h>
-#include <ruleritem.h>
-#include <lineitem.h>
+#include <ruleritem.h> 
+#include <items/lineitem.h>
 #ifdef DEBUGGING_ENABLED
 #include <QDebug>
 #endif

@@ -2,6 +2,7 @@
 #define LINEITEM_H
 
 #include <baseallitems.h>
+#include <QGraphicsRectItem>
 #include <QLineF>
 #include <QPainterPath>
 
@@ -38,6 +39,10 @@ class LineItem : public BaseAllItems {
   void createContextMenu(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
 
  public Q_SLOTS:
+
+ private Q_SLOTS:
+  void updateRightSideLineToMove(const QPointF &to, const QPointF &lastpos);
+  void updateLeftSideLineToMove(const QPointF &to, const QPointF &lastpos);
 
  private:
   QColor m_color;
