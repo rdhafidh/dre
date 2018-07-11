@@ -3,10 +3,11 @@
 #include <baseview.h>
 #include <formdesign.h>
 #include <items/imageitem.h>
-#include <items/textitem.h>
-#include <pageitem.h>
-#include <ruleritem.h> 
 #include <items/lineitem.h>
+#include <items/textitem.h>
+#include <items/triangleitem.h>
+#include <pageitem.h>
+#include <ruleritem.h>
 #ifdef DEBUGGING_ENABLED
 #include <QDebug>
 #endif
@@ -69,18 +70,31 @@ BaseAllItems *SceneView::createImageitem(const QPointF &topleft,
 }
 
 BaseAllItems *SceneView::createLineItem(const QPointF &topleft,
-                                        const QSizeF &size)
-{
-    LineItem *ln=new LineItem;
-    ln->setParent(pageitemdsgn);
-    ln->setParentItem(pageitemdsgn);  
-    ln->drawLine (QLineF(topleft,QPointF(size.width (),size.height ()))); 
-    connect(ln, &LineItem::emitRefreshItemProperty, m_pagedesign,
-            &FormDesign::handleItemPropertyUpdate);
-    connect(ln, &LineItem::forceThisItemSelected, this,
-            &SceneView::updateForceThatItemSelected);
-    m_items <<ln;
-    return (BaseAllItems*)ln;
+                                        const QSizeF &size) {
+  LineItem *ln = new LineItem;
+  ln->setParent(pageitemdsgn);
+  ln->setParentItem(pageitemdsgn);
+  ln->drawLine(QLineF(topleft, QPointF(size.width(), size.height())));
+  connect(ln, &LineItem::emitRefreshItemProperty, m_pagedesign,
+          &FormDesign::handleItemPropertyUpdate);
+  connect(ln, &LineItem::forceThisItemSelected, this,
+          &SceneView::updateForceThatItemSelected);
+  m_items << ln;
+  return (BaseAllItems *)ln;
+}
+
+BaseAllItems *SceneView::createTriangleItem(const QPointF &topleft,
+                                            const QSizeF &size) {
+  TriangleItem *m_tr = new TriangleItem;
+  m_tr->setParent(pageitemdsgn);
+  m_tr->setParentItem(pageitemdsgn);
+  m_tr->setRect(QRectF(topleft, size));
+  connect(m_tr, &LineItem::emitRefreshItemProperty, m_pagedesign,
+          &FormDesign::handleItemPropertyUpdate);
+  connect(m_tr, &LineItem::forceThisItemSelected, this,
+          &SceneView::updateForceThatItemSelected);
+  m_items << m_tr;
+  return (BaseAllItems *)m_tr;
 }
 
 BaseAllItems *SceneView::createShapeRectangleitem(const QPointF &topleft,
@@ -108,10 +122,12 @@ void SceneView::setupMouseRulerPointers() {
 
 void SceneView::ClearAllItems() {
   for (auto item : m_items) {
-    removeItem(item);
-    item->disconnect();
-    delete item;
-    item = nullptr;
+    if (item) {
+      removeItem(item);
+      item->disconnect();
+      delete item;
+      item = nullptr;
+    }
   }
   m_items.clear();
   m_undostack.clear();

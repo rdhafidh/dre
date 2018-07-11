@@ -95,7 +95,9 @@ void MainWindow::privHapusSemuaItem() {
 
 void MainWindow::privAddShapeLine() { createItemBase(ItemConst::Tipe::GARIS); }
 
-void MainWindow::privAddShapeTriangle() {}
+void MainWindow::privAddShapeTriangle() {
+  createItemBase(ItemConst::Tipe::SEGITIGA);
+}
 
 void MainWindow::privAddShapeEllipse() {}
 
