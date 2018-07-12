@@ -1,5 +1,4 @@
 #include "mainwindow.h"
-
 #include <customobyek.h>
 #include <formdesign.h>
 #include <imageitem.h>
@@ -11,6 +10,7 @@
 #include <QDebug>
 #endif
 #include "ui_mainwindow.h"
+#include <pageitem.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
   act_redo->setEnabled(false);
   ui->menuEdit->addAction(act_undo);
   ui->menuEdit->addAction(act_redo);
+  m_currentInsertItemType = ItemConst::Tipe::UNDEFINED;
 
   createNewTabEditor();
 }
@@ -76,6 +77,18 @@ MainWindow::~MainWindow() {
   daftarform.clear();
   delete ui;
 }
+
+ItemConst::Tipe MainWindow::currentInsertItemType() const {
+  return m_currentInsertItemType;
+}
+
+void MainWindow::makeCurrentInsertItemTypeUndefined() {
+  m_currentInsertItemType = ItemConst::Tipe::UNDEFINED;
+}
+
+QAction *MainWindow::actUndoObject() { return this->act_undo; }
+
+QAction *MainWindow::actRedoObject() { return this->act_redo; }
 
 void MainWindow::privAddSampleText() { createItemBase(ItemConst::Tipe::TEKS); }
 
@@ -110,10 +123,8 @@ void MainWindow::createItemBase(const ItemConst::Tipe &ty) {
   FormDesign *page = qobject_cast<FormDesign *>(widget);
   if (page == nullptr) return;
 
-  page->getScene()->undostack()->push(
-      new XCommands::InsertItemCommand(page->getScene(), ty));
-  act_redo->setEnabled(page->getScene()->undostack()->canRedo());
-  act_undo->setEnabled(page->getScene()->undostack()->canUndo());
+  m_currentInsertItemType = ty;
+  page->getScene ()->pageItemDesign ()->setInsertItemMode(true);
 }
 
 void MainWindow::privExit() { close(); }

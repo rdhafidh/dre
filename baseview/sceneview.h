@@ -3,10 +3,13 @@
 
 #include <QGraphicsScene>
 #include <QUndoStack>
+
 class BaseAllItems;
 class PageItem;
 class FormDesign;
 class RulerItem;
+
+class MainWindow;
 
 class SceneView : public QGraphicsScene {
   Q_OBJECT
@@ -14,6 +17,9 @@ class SceneView : public QGraphicsScene {
   explicit SceneView(QObject *parent = 0);
   void setMainPageDesign(FormDesign *from);
   FormDesign *mainPageDesign();
+
+  void setMainWindow(MainWindow *mainWin);
+  MainWindow *mainWindow();
 
   ~SceneView();
 
@@ -56,6 +62,7 @@ class SceneView : public QGraphicsScene {
 
  private Q_SLOTS:
   void updateForceThatItemSelected(BaseAllItems *item);
+  void doInsertItemFromTopLeft(const QPointF &p);
 
  protected:
   virtual void mouseMoveEvent(QGraphicsSceneMouseEvent *mouseEvent);
@@ -69,6 +76,7 @@ class SceneView : public QGraphicsScene {
   RulerItem *ruler_kiri;
   QUndoStack m_undostack;
   FormDesign *m_pagedesign;
+  MainWindow *m_mainwin;
 };
 
 #endif  // SCENEVIEW_H

@@ -8,6 +8,7 @@ class ImageItem : public BaseAllItems {
   Q_OBJECT
   Q_PROPERTY(QString imageFile READ imageFile WRITE setImageFile NOTIFY
                  imageFileChanged)
+
  public:
   explicit ImageItem(QGraphicsItem *parent = 0);
   ~ImageItem();
@@ -26,7 +27,8 @@ class ImageItem : public BaseAllItems {
  protected:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
              QWidget *widget) Q_DECL_OVERRIDE;
- void createContextMenu (QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
+  void createContextMenu(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
+
  private:
   qreal scalevalue = 1.0;
   QString imagefile;

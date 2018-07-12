@@ -14,14 +14,18 @@ class QStandardItemModel;
 class QStandardItem;
 class PageItem;
 class PropertyEditItemDelegate;
+ 
+class MainWindow; 
 
 class FormDesign : public QWidget {
   Q_OBJECT
 
  public:
-  explicit FormDesign(QWidget *parent = 0);
+  explicit FormDesign(MainWindow *fromMainWind,QWidget *parent = 0);
   ~FormDesign();
   SceneView *getScene();
+   
+   MainWindow *mainWindow();
 
  public Q_SLOTS:
   void resetPropertyItemObj();
@@ -57,6 +61,7 @@ class FormDesign : public QWidget {
   QStandardItemModel *model_item_prop;
   PropertyEditItemDelegate *delegate_obj_editor;
   QList<ManyStructUiObjectParam::RecordedSingleRowItem> recorded_item_prop;
+  MainWindow *m_mainWindow;
 };
 
 #endif  // FORMDESIGN_H

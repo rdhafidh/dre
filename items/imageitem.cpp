@@ -2,6 +2,7 @@
 #include <QFileInfo>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
+
 ImageItem::ImageItem(QGraphicsItem *parent) : BaseAllItems(parent) {
   // 2 MB
   maxsizefile = 1024 * 1024 * 2;
@@ -50,14 +51,14 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
   //     painter->scale(m_scale, m_scale);
   //     painter->translate(m_delta);
   //     painter->drawPixmap(m_rect.topLeft(), m_pixmap);
-  if (imgdata.isNull()) { 
+  if (imgdata.isNull()) {
     QFont font;
-    font.setPointSize ( (this->rect ().height ()/10)+(this->rect ().width ()/20));
+    font.setPointSize((this->rect().height() / 10) +
+                      (this->rect().width() / 20));
     painter->setFont(font);
     painter->drawText(this->rect(), Qt::AlignCenter, tr("No Image"));
     painter->setOpacity(0.2);
-    painter->fillRect(this->rect(),
-                      QBrush(QPixmap(":/image/empty_kotak.png")));
+    painter->fillRect(this->rect(), QBrush(QPixmap(":/image/empty_kotak.png")));
 
   } else {
     painter->setOpacity(1.0);
@@ -69,18 +70,17 @@ void ImageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
   BaseAllItems::paint(painter, option, widget);
 }
 
-void ImageItem::createContextMenu(QGraphicsSceneContextMenuEvent *event)
-{
-    QMenu menu;
-    QAction *cpAction = menu.addAction("Copy");
-    QAction *pasteAction = menu.addAction("Paste");
-    QAction *delAction = menu.addAction("Delete");
-    QAction *dumpPropertiAction = menu.addAction("Dump Properti");
-    QAction *selectedAction = menu.exec(event->screenPos());
-    if (selectedAction == cpAction) {
-    } else if (selectedAction == pasteAction) {
-    } else if (selectedAction == delAction) {
-    }else if(selectedAction==dumpPropertiAction){
-        this->dumpPropertiInfo ();
-    }
+void ImageItem::createContextMenu(QGraphicsSceneContextMenuEvent *event) {
+  QMenu menu;
+  QAction *cpAction = menu.addAction("Copy");
+  QAction *pasteAction = menu.addAction("Paste");
+  QAction *delAction = menu.addAction("Delete");
+  QAction *dumpPropertiAction = menu.addAction("Dump Properti");
+  QAction *selectedAction = menu.exec(event->screenPos());
+  if (selectedAction == cpAction) {
+  } else if (selectedAction == pasteAction) {
+  } else if (selectedAction == delAction) {
+  } else if (selectedAction == dumpPropertiAction) {
+    this->dumpPropertiInfo();
+  }
 }

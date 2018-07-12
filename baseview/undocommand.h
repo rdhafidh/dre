@@ -51,7 +51,8 @@ class InsertItemCommand : public QUndoCommand {
    * tetap selalu di create jadi cuman di mark
    * kalo terjadi undo di removeKindsItem
    * */
-  InsertItemCommand(SceneView *fromscene, const ItemConst::Tipe &type,
+  InsertItemCommand(SceneView *fromscene, const QPointF &point,
+                    const ItemConst::Tipe &type,
                     QUndoCommand *parent = Q_NULLPTR);
 
   void undo() Q_DECL_OVERRIDE;
@@ -62,6 +63,7 @@ class InsertItemCommand : public QUndoCommand {
   BaseAllItems *newitem;
   ItemConst::Tipe m_tipeitem;
   SceneView *scene;
+  QPointF m_TopLeftInit;
 };
 class DeleteItemCommand : public QUndoCommand {
  public:

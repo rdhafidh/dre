@@ -8,6 +8,7 @@
 #include <QGraphicsItem>
 #include <QStringList>
 #include <QVariantList>
+#include <pageitem.h>
 
 XCommands::MoveItemCommand::MoveItemCommand(ItemShapeBase *item,
                                             const QRectF &newRect,
@@ -52,10 +53,12 @@ int XCommands::MoveItemPosOnlyCommand::id() const {
 }
 
 XCommands::InsertItemCommand::InsertItemCommand(SceneView *fromscene,
+                                                const QPointF &point,
                                                 const ItemConst::Tipe &type,
                                                 QUndoCommand *parent)
     : QUndoCommand(parent),
       scene(fromscene),
+      m_TopLeftInit(point),
       m_tipeitem(type),
       newitem(nullptr) {
   switch (m_tipeitem) {
@@ -94,23 +97,28 @@ void XCommands::InsertItemCommand::undo() {
 }
 
 void XCommands::InsertItemCommand::redo() {
-  if (newitem == nullptr) {
+  if (newitem == nullptr && !m_TopLeftInit.isNull ()
+          && qobject_cast<SceneView *>(scene)->pageItemDesign ()->contains (m_TopLeftInit)) {
     switch (this->m_tipeitem) {
       case ItemConst::Tipe::TEKS:
         newitem = qobject_cast<SceneView *>(scene)->createTextitem(
             QPointF(10, 10), QSizeF(100, 200));
+        newitem->setPos(m_TopLeftInit);
         break;
       case ItemConst::Tipe::GAMBAR:
         newitem = qobject_cast<SceneView *>(scene)->createImageitem(
             QPointF(10, 10), QSizeF(200, 300));
+        newitem->setPos(m_TopLeftInit);
         break;
       case ItemConst::Tipe::GARIS:
         newitem = qobject_cast<SceneView *>(scene)->createLineItem(
             QPointF(30, 20), QSizeF(180, 20));
+        newitem->setPos(m_TopLeftInit);
         break;
       case ItemConst::Tipe::SEGITIGA:
         newitem = qobject_cast<SceneView *>(scene)->createTriangleItem(
             QPointF(40, 60), QSizeF(90, 100));
+        newitem->setPos(m_TopLeftInit);
         break;
       default:
         break;

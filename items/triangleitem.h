@@ -8,8 +8,8 @@ class TriangleItem : public BaseAllItems {
   Q_OBJECT
   Q_PROPERTY(qreal lineWidth READ getLineWidth WRITE setLineWidth NOTIFY
                  lineWidthChanged)
-  Q_PROPERTY(
-      QColor lineColor READ getLineColor WRITE setLineColor NOTIFY lineColorChanged)
+  Q_PROPERTY(QColor lineColor READ getLineColor WRITE setLineColor NOTIFY
+                 lineColorChanged)
 
  public:
   explicit TriangleItem(QGraphicsItem *parent = nullptr);

@@ -2,6 +2,8 @@
 #include <QGraphicsDropShadowEffect>
 #include <QGraphicsProxyWidget>
 #include <QPainter>
+#include <QCursor>
+#include <QGraphicsSceneHoverEvent>
 
 PageItem::PageItem(QGraphicsItem *parent) : QGraphicsObject(parent) {
   setAcceptHoverEvents(true);
@@ -12,6 +14,7 @@ PageItem::PageItem(QGraphicsItem *parent) : QGraphicsObject(parent) {
   setFlag(QGraphicsItem::ItemClipsChildrenToShape);
   m_drawgrid = true;
   m_gridsize = 5; 
+  setAcceptHoverEvents (true);
 }
 
 PageItem::~PageItem() {}
@@ -43,6 +46,19 @@ void PageItem::setDrawGrid(bool a) {
 }
 
 bool PageItem::drawGrid() const { return m_drawgrid; }
+
+void PageItem::setInsertItemMode(bool e)
+{
+    m_isInsertItemMode=e;
+    if(!e){
+        setCursor (QCursor(Qt::ArrowCursor));
+    }
+}
+
+bool PageItem::isInsertItemMode() const
+{
+    return m_isInsertItemMode;
+}
 
 void PageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
@@ -77,4 +93,28 @@ QPainterPath PageItem::shape() const {
   QPainterPath path;
   path.addRect(rect);
   return path;
+}
+
+void PageItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+    if(m_isInsertItemMode){
+        this->emitStartInsertFromTopLeftPoin (event->pos ());
+    }
+    QGraphicsObject::mousePressEvent (event);
+}
+
+void PageItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+{
+    if(m_isInsertItemMode){
+        setCursor (QCursor(Qt::CrossCursor));
+    }
+    QGraphicsObject::hoverEnterEvent (event);
+}
+
+void PageItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+{
+    if(m_isInsertItemMode){
+        setCursor (QCursor(Qt::ArrowCursor));
+    }
+    QGraphicsObject::hoverLeaveEvent (event);
 }

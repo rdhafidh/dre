@@ -1,6 +1,7 @@
 #include "formdesign.h"
 #include <imageitem.h>
 #include <lineitem.h>
+#include <mainwindow.h>
 #include <pageitem.h>
 #include <propertyedititemdelegate.h>
 #include <ruleritem.h>
@@ -14,16 +15,17 @@
 #include <QStandardItemModel>
 #include <QTreeView>
 #include "ui_formdesign.h"
-
-FormDesign::FormDesign(QWidget *parent)
-    : QWidget(parent), ui(new Ui::FormDesign) {
+#include <mainwindow.h>
+FormDesign::FormDesign(MainWindow *fromMainWind, QWidget *parent)
+    : QWidget(parent), ui(new Ui::FormDesign), m_mainWindow(fromMainWind) {
   ui->setupUi(this);
   delegate_obj_editor = new PropertyEditItemDelegate;
   ui->graphicsView->grabGesture(Qt::PinchGesture);
   ui->graphicsView->grabGesture(Qt::SwipeGesture);
   scnview = new SceneView(this);
-  scnview->setMainPageDesign(this);
   scnview->buildNewItemPage();
+  scnview->setMainPageDesign(this);
+  scnview->setMainWindow(m_mainWindow);
   scnview->buildNewRuler(
       Qt::Horizontal, QSizeF(scnview->pageItemDesign()->getRect().width(), 0));
   scnview->rulerAtas()->setRatioUnit(
@@ -59,6 +61,8 @@ FormDesign::~FormDesign() {
 }
 
 SceneView *FormDesign::getScene() { return scnview; }
+
+MainWindow *FormDesign::mainWindow() { return m_mainWindow; }
 
 void FormDesign::resetPropertyItemObj() {
   model_item_prop->clear();

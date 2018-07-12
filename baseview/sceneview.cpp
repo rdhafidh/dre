@@ -11,26 +11,38 @@
 #ifdef DEBUGGING_ENABLED
 #include <QDebug>
 #endif
+#include <mainwindow.h>
+#include <undocommand.h>
 #include <QGraphicsSceneMouseEvent>
 #include <QList>
+#include <QAction>
 
 SceneView::SceneView(QObject *parent)
     : QGraphicsScene(parent),
       pageitemdsgn(nullptr),
       m_pagedesign(nullptr),
+      m_mainwin(nullptr),
       ruler_atas(nullptr),
       ruler_kiri(nullptr) {
   connect(this, SIGNAL(selectionChanged()), SLOT(onItemSelected()));
   m_undostack.clear();
   if_page_is_not_build = true;
+
 }
 
 void SceneView::setMainPageDesign(FormDesign *from) {
   if (from == nullptr) return;
   m_pagedesign = from;
+  connect(m_pagedesign->getScene()->pageItemDesign(),
+          &PageItem::emitStartInsertFromTopLeftPoin, this,
+          &SceneView::doInsertItemFromTopLeft);
 }
 
 FormDesign *SceneView::mainPageDesign() { return m_pagedesign; }
+
+void SceneView::setMainWindow(MainWindow *mainWin) { m_mainwin = mainWin; }
+
+MainWindow *SceneView::mainWindow() { return m_mainwin; }
 
 SceneView::~SceneView() {
   ClearAllItems();
@@ -218,6 +230,18 @@ void SceneView::updateForceThatItemSelected(BaseAllItems *item) {
     } else {
       x->setSelected(false);
     }
+  }
+}
+
+void SceneView::doInsertItemFromTopLeft(const QPointF &p) {
+  if (m_mainwin && pageitemdsgn &&
+      m_mainwin->currentInsertItemType() != ItemConst::Tipe::UNDEFINED &&
+      pageitemdsgn->isInsertItemMode()) {
+    undostack()->push(new XCommands::InsertItemCommand(
+        this, p, m_mainwin->currentInsertItemType()));
+    m_mainwin->actRedoObject()->setEnabled(undostack()->canRedo());
+    m_mainwin->actUndoObject()->setEnabled(undostack()->canUndo());
+   pageitemdsgn->setInsertItemMode(false);
   }
 }
 

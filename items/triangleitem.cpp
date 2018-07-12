@@ -9,7 +9,7 @@
 TriangleItem::TriangleItem(QGraphicsItem *parent)
     : BaseAllItems(parent), m_lineColor(QColor("black")), m_lineWidth(1.5) {
   setItemType(ItemConst::Tipe::SEGITIGA);
-  setProperty ("borderLine",BORDER_KOSONG);
+  setProperty("borderLine", BORDER_KOSONG);
 }
 
 TriangleItem::~TriangleItem() {}

@@ -11,7 +11,8 @@ namespace ItemConst {
                     SEGITIGA=QGraphicsItem::UserType+4,
                     GAMBAR=QGraphicsItem::UserType+5,
                     BARCODE=QGraphicsItem::UserType+6,
-                     TEKS=QGraphicsItem::UserType+7
+                     TEKS=QGraphicsItem::UserType+7,
+                     UNDEFINED=QGraphicsItem::UserType+8
        };
     enum class CekMelebihiPageItem{
         ATAS=0x1,BAWAH,KIRI,KANAN

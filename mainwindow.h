@@ -1,11 +1,11 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <constvalue.h>
 #include <manystructuiobjectparam.h>
 #include <QList>
 #include <QMainWindow>
 #include <QPair>
-#include <constvalue.h>
 
 namespace Ui {
 class MainWindow;
@@ -13,6 +13,7 @@ class MainWindow;
 class SceneView;
 class FormDesign;
 class QAction;
+
 struct HelperTabSwitch {
   FormDesign *design;
   int tabidx;
@@ -24,6 +25,12 @@ class MainWindow : public QMainWindow {
  public:
   explicit MainWindow(QWidget *parent = 0);
   ~MainWindow();
+
+  ItemConst::Tipe currentInsertItemType() const;
+  void makeCurrentInsertItemTypeUndefined();
+
+  QAction *actUndoObject();
+  QAction *actRedoObject();
 
  public Q_SLOTS:
   void createNewTabEditor();
@@ -37,14 +44,14 @@ class MainWindow : public QMainWindow {
   void on_actionTambah_Gambar_triggered();
 
   void on_actionTambahLine_triggered();
-  
+
   void on_actionTambahSegitiga_triggered();
-  
+
   void on_actionTambahBulat_triggered();
-  
+
   void on_actionTambahKotak_triggered();
-  
-private:
+
+ private:
   void privAddSampleText();
   void privAddSampleImage();
   void privHapusSemuaItem();
@@ -52,7 +59,7 @@ private:
   void privAddShapeTriangle();
   void privAddShapeEllipse();
   void privAddShapeRectangle();
-  
+
   void createItemBase(const ItemConst::Tipe &ty);
   void privExit();
 
@@ -61,6 +68,7 @@ private:
   QAction *act_redo;
   QList<HelperTabSwitch *> daftarform;
   FormDesign *m_maybeOldTabwidget;
+  ItemConst::Tipe m_currentInsertItemType;
 };
 
 #endif  // MAINWINDOW_H
