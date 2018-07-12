@@ -241,7 +241,7 @@ void SceneView::doInsertItemFromTopLeft(const QPointF &p) {
         this, p, m_mainwin->currentInsertItemType()));
     m_mainwin->actRedoObject()->setEnabled(undostack()->canRedo());
     m_mainwin->actUndoObject()->setEnabled(undostack()->canUndo());
-   pageitemdsgn->setInsertItemMode(false);
+   pageitemdsgn->setInsertItemMode(false); 
   }
 }
 

@@ -1,9 +1,11 @@
-#include "pageitem.h" 
+#include "pageitem.h"
+#include <mainwindow.h>
+#include <sceneview.h>
+#include <QCursor>
 #include <QGraphicsDropShadowEffect>
 #include <QGraphicsProxyWidget>
-#include <QPainter>
-#include <QCursor>
 #include <QGraphicsSceneHoverEvent>
+#include <QPainter>
 
 PageItem::PageItem(QGraphicsItem *parent) : QGraphicsObject(parent) {
   setAcceptHoverEvents(true);
@@ -13,15 +15,15 @@ PageItem::PageItem(QGraphicsItem *parent) : QGraphicsObject(parent) {
   setGraphicsEffect(shadow);
   setFlag(QGraphicsItem::ItemClipsChildrenToShape);
   m_drawgrid = true;
-  m_gridsize = 5; 
-  setAcceptHoverEvents (true);
+  m_gridsize = 5;
+  setAcceptHoverEvents(true);
 }
 
 PageItem::~PageItem() {}
 
 void PageItem::setRect(const QRectF &f) {
-  if(rect==f) return;
-  
+  if (rect == f) return;
+
   rect = f;
   update();
 }
@@ -47,18 +49,18 @@ void PageItem::setDrawGrid(bool a) {
 
 bool PageItem::drawGrid() const { return m_drawgrid; }
 
-void PageItem::setInsertItemMode(bool e)
-{
-    m_isInsertItemMode=e;
-    if(!e){
-        setCursor (QCursor(Qt::ArrowCursor));
+void PageItem::setInsertItemMode(bool e) {
+  m_isInsertItemMode = e;
+  if (!e) {
+    setCursor(QCursor(Qt::ArrowCursor));
+    SceneView *v = qobject_cast<SceneView *>(scene());
+    if (v && v->mainWindow()) {
+      v->mainWindow()->makeCurrentInsertItemTypeUndefined();
     }
+  }
 }
 
-bool PageItem::isInsertItemMode() const
-{
-    return m_isInsertItemMode;
-}
+bool PageItem::isInsertItemMode() const { return m_isInsertItemMode; }
 
 void PageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
@@ -95,26 +97,23 @@ QPainterPath PageItem::shape() const {
   return path;
 }
 
-void PageItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-    if(m_isInsertItemMode){
-        this->emitStartInsertFromTopLeftPoin (event->pos ());
-    }
-    QGraphicsObject::mousePressEvent (event);
+void PageItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
+  if (m_isInsertItemMode) {
+    this->emitStartInsertFromTopLeftPoin(event->pos());
+  }
+  QGraphicsObject::mousePressEvent(event);
 }
 
-void PageItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
-{
-    if(m_isInsertItemMode){
-        setCursor (QCursor(Qt::CrossCursor));
-    }
-    QGraphicsObject::hoverEnterEvent (event);
+void PageItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event) {
+  if (m_isInsertItemMode) {
+    setCursor(QCursor(Qt::CrossCursor));
+  }
+  QGraphicsObject::hoverEnterEvent(event);
 }
 
-void PageItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
-{
-    if(m_isInsertItemMode){
-        setCursor (QCursor(Qt::ArrowCursor));
-    }
-    QGraphicsObject::hoverLeaveEvent (event);
+void PageItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event) {
+  if (m_isInsertItemMode) {
+    setCursor(QCursor(Qt::ArrowCursor));
+  }
+  QGraphicsObject::hoverLeaveEvent(event);
 }
