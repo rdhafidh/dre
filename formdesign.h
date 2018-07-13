@@ -14,18 +14,18 @@ class QStandardItemModel;
 class QStandardItem;
 class PageItem;
 class PropertyEditItemDelegate;
- 
-class MainWindow; 
+
+class MainWindow;
 
 class FormDesign : public QWidget {
   Q_OBJECT
 
  public:
-  explicit FormDesign(MainWindow *fromMainWind,QWidget *parent = 0);
+  explicit FormDesign(MainWindow *fromMainWind, QWidget *parent = 0);
   ~FormDesign();
   SceneView *getScene();
-   
-   MainWindow *mainWindow();
+
+  MainWindow *mainWindow();
 
  public Q_SLOTS:
   void resetPropertyItemObj();
@@ -38,14 +38,16 @@ class FormDesign : public QWidget {
   // klik getobj to prop
   void buildItemPropertySelectionTeks(BaseAllItems *item);
   void buildItemPropertySelectionGambar(BaseAllItems *item);
-  void buildItemPropertySelectionLine (BaseAllItems *item);
+  void buildItemPropertySelectionLine(BaseAllItems *item);
+  void buildItemPropertySelectionTriangle(BaseAllItems *item);
 
   // on edit change user interact to direct item
   // from prop edit to  setting of obj
   void updateItemPropertySeletionTeks(const BaseAllItems *item);
   void updateItemPropertySeletionGambar(const BaseAllItems *item);
   void updateItemPropertySeletionLine(const BaseAllItems *item);
-  
+  void updateItemPropertySeletionTriangle(const BaseAllItems *item);
+
   QStandardItem *insertNewPropertyItemFromParent(
       QStandardItem *parent,
       const ManyStructUiObjectParam::SingleRowPropertyParamItemEdit &in);

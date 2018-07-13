@@ -7,15 +7,16 @@
 #include <ruleritem.h>
 #include <sceneview.h>
 #include <textitem.h>
+#include <triangleitem.h>
 #include <undocommand.h>
 
 #ifdef DEBUGGING_ENABLED
 #include <QDebug>
 #endif
+#include <mainwindow.h>
 #include <QStandardItemModel>
 #include <QTreeView>
 #include "ui_formdesign.h"
-#include <mainwindow.h>
 FormDesign::FormDesign(MainWindow *fromMainWind, QWidget *parent)
     : QWidget(parent), ui(new Ui::FormDesign), m_mainWindow(fromMainWind) {
   ui->setupUi(this);
@@ -91,6 +92,9 @@ void FormDesign::handleItemPropertyUpdate() {
     case ItemConst::Tipe::GARIS:
       this->updateItemPropertySeletionLine(fromitem);
       break;
+    case ItemConst::Tipe::SEGITIGA:
+      this->updateItemPropertySeletionTriangle(fromitem);
+      break;
     default:
       break;
   }
@@ -109,6 +113,9 @@ void FormDesign::handleItemSelection(BaseAllItems *item) {
       break;
     case ItemConst::Tipe::GARIS:
       this->buildItemPropertySelectionLine(item);
+      break;
+    case ItemConst::Tipe::SEGITIGA:
+      this->buildItemPropertySelectionTriangle(item);
       break;
     default:
       break;
@@ -167,6 +174,22 @@ void FormDesign::buildItemPropertySelectionLine(BaseAllItems *item) {
   }
 }
 
+void FormDesign::buildItemPropertySelectionTriangle(BaseAllItems *item) {
+  TriangleItem *ln = qobject_cast<TriangleItem *>(item);
+  if (ln) {
+    QStandardItem *last_parent = nullptr;
+    QStandardItem *parent = model_item_prop->invisibleRootItem();
+    last_parent = insertNewPropertyItemFromParent(
+        parent, ManyStructUiObjectParam::makePropertyItemSingleRow(
+                    tr("Posisi X"), QIcon(), false, ln->pos().x(), QIcon(),
+                    false, false));
+    last_parent = insertNewPropertyItemFromParent(
+        parent, ManyStructUiObjectParam::makePropertyItemSingleRow(
+                    tr("Posisi Y"), QIcon(), false, ln->pos().y(), QIcon(),
+                    false, false));
+  }
+}
+
 void FormDesign::updateItemPropertySeletionTeks(const BaseAllItems *item) {
   const TextItem *itm = qobject_cast<const TextItem *>(item);
   if (itm) {
@@ -199,6 +222,21 @@ void FormDesign::updateItemPropertySeletionGambar(const BaseAllItems *item) {
 
 void FormDesign::updateItemPropertySeletionLine(const BaseAllItems *item) {
   const LineItem *itm = qobject_cast<const LineItem *>(item);
+  if (itm) {
+    auto item_to_edit =
+        lookUpSecondColumnPropItemFromKeyStringCol1(tr("Posisi X"));
+    if (item_to_edit != nullptr) {
+      item_to_edit->setText(tr("%1").arg(itm->pos().x()));
+    }
+    item_to_edit = lookUpSecondColumnPropItemFromKeyStringCol1(tr("Posisi Y"));
+    if (item_to_edit != nullptr) {
+      item_to_edit->setText(tr("%1").arg(itm->pos().y()));
+    }
+  }
+}
+
+void FormDesign::updateItemPropertySeletionTriangle(const BaseAllItems *item) {
+  const TriangleItem *itm = qobject_cast<const TriangleItem *>(item);
   if (itm) {
     auto item_to_edit =
         lookUpSecondColumnPropItemFromKeyStringCol1(tr("Posisi X"));
