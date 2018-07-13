@@ -23,9 +23,9 @@ class MoveLineItemCommand : public QUndoCommand {
   MoveLineItemCommand(ItemShapeBase *item, const QLineF &newLine,
                       QUndoCommand *parent = Q_NULLPTR);
   ~MoveLineItemCommand();
-  void undo() Q_DECL_OVERRIDE;
-  void redo() Q_DECL_OVERRIDE;
-  int id() const Q_DECL_OVERRIDE;
+  void undo() override;
+  void redo() override;
+  int id() const override;
 
  private:
   QObject *currItem;
@@ -37,9 +37,9 @@ class MoveItemCommand : public QUndoCommand {
  public:
   MoveItemCommand(ItemShapeBase *item, const QRectF &newRect,
                   QUndoCommand *parent = Q_NULLPTR);
-  void undo() Q_DECL_OVERRIDE;
-  void redo() Q_DECL_OVERRIDE;
-  int id() const Q_DECL_OVERRIDE;
+  void undo() override;
+  void redo() override;
+  int id() const override;
 
  private:
   QRectF oldrect;
@@ -51,9 +51,9 @@ class MoveItemPosOnlyCommand : public QUndoCommand {
  public:
   MoveItemPosOnlyCommand(QGraphicsItem *item, const QPointF &newPos,
                          QUndoCommand *parent = Q_NULLPTR);
-  void undo() Q_DECL_OVERRIDE;
-  void redo() Q_DECL_OVERRIDE;
-  int id() const Q_DECL_OVERRIDE;
+  void undo() override;
+  void redo() override;
+  int id() const override;
 
  private:
   QPointF newpos;
@@ -72,9 +72,9 @@ class InsertItemCommand : public QUndoCommand {
                     const ItemConst::Tipe &type,
                     QUndoCommand *parent = Q_NULLPTR);
 
-  void undo() Q_DECL_OVERRIDE;
-  void redo() Q_DECL_OVERRIDE;
-  int id() const Q_DECL_OVERRIDE;
+  void undo() override;
+  void redo() override;
+  int id() const override;
 
  private:
   BaseAllItems *newitem;
@@ -87,9 +87,9 @@ class DeleteItemCommand : public QUndoCommand {
  public:
   DeleteItemCommand(BaseAllItems *atItem, QUndoCommand *parent = Q_NULLPTR);
 
-  void undo() Q_DECL_OVERRIDE;
-  void redo() Q_DECL_OVERRIDE;
-  int id() const Q_DECL_OVERRIDE;
+  void undo() override;
+  void redo() override;
+  int id() const override;
 
  private:
   BaseAllItems *fromitem;

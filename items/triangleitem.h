@@ -29,10 +29,10 @@ class TriangleItem : public BaseAllItems {
 
  protected:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget) Q_DECL_OVERRIDE;
+             QWidget *widget) override;
   QPainterPath shape() const;
 
-  void createContextMenu(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
+  void createContextMenu(QGraphicsSceneContextMenuEvent *event) override;
 
  private:
   QColor m_lineColor;

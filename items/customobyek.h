@@ -22,10 +22,10 @@ class CustomObyek : public QGraphicsObject {
 
  protected:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget) Q_DECL_OVERRIDE;
-  void mousePressEvent(QGraphicsSceneMouseEvent *e) Q_DECL_OVERRIDE;
-  QPainterPath shape() const Q_DECL_OVERRIDE;
-  QRectF boundingRect() const Q_DECL_OVERRIDE;
+             QWidget *widget) override;
+  void mousePressEvent(QGraphicsSceneMouseEvent *e) override;
+  QPainterPath shape() const override;
+  QRectF boundingRect() const override;
 
  private:
   QRectF m_rect;

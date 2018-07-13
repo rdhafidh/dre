@@ -34,15 +34,15 @@ class SelectionMarkerHandleBase : public QGraphicsItem {
  protected:
   // sistem
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget) Q_DECL_OVERRIDE;
-  void mouseMoveEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-  void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  QRectF boundingRect() const Q_DECL_OVERRIDE;
-  QPainterPath shape() const Q_DECL_OVERRIDE;
+             QWidget *widget) override;
+  void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+  void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+  void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
+  void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+  QRectF boundingRect() const override;
+  QPainterPath shape() const override;
 
  private:
   void handlePointerRulerFromCursorType(const PointerModeRulerOfItem &cursor);

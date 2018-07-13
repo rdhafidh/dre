@@ -34,12 +34,12 @@ class PageItem : public QGraphicsObject {
 
  protected:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget = Q_NULLPTR) Q_DECL_OVERRIDE;
-  QRectF boundingRect() const Q_DECL_OVERRIDE;
-  QPainterPath shape() const Q_DECL_OVERRIDE;
-  void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+             QWidget *widget = Q_NULLPTR) override;
+  QRectF boundingRect() const override;
+  QPainterPath shape() const override;
+  void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+  void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
  public slots:
  private:

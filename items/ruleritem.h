@@ -26,11 +26,11 @@ signals:
 public slots:
     
 protected:
-    void paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR) Q_DECL_OVERRIDE;
-    QRectF boundingRect ()const Q_DECL_OVERRIDE;
-    QPainterPath shape() const Q_DECL_OVERRIDE;
+    void paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR) override;
+    QRectF boundingRect ()const override;
+    QPainterPath shape() const override;
     virtual void	contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
-    Q_DECL_OVERRIDE;
+    override;
 private:
     QPointF m_cursorpos;
     QPolygonF pArrow;

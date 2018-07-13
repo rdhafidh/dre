@@ -57,18 +57,18 @@ class BaseAllItems : public ItemShapeBase, public QGraphicsItem {
   void dumpPropertiInfo();
 
  protected:
-  QRectF boundingRect() const Q_DECL_OVERRIDE;
-  QPainterPath shape() const Q_DECL_OVERRIDE;
+  QRectF boundingRect() const override;
+  QPainterPath shape() const override;
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget) Q_DECL_OVERRIDE;
-  void mousePressEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  void mouseMoveEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) Q_DECL_OVERRIDE;
-  void hoverMoveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-  int type() const Q_DECL_OVERRIDE;
+             QWidget *widget) override;
+  void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+  void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
+  void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+  void hoverMoveEvent(QGraphicsSceneHoverEvent *event) override;
+  int type() const override;
   QVariant itemChange(GraphicsItemChange change,
-                      const QVariant &value) Q_DECL_OVERRIDE;
-  void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) Q_DECL_OVERRIDE;
+                      const QVariant &value) override;
+  void contextMenuEvent(QGraphicsSceneContextMenuEvent *event) override;
 
  private:
   void setModeOnOffLineSelection(bool b);

@@ -11,8 +11,8 @@ class SelectionLineItemHandler : public QGraphicsRectItem {
   bool isModeEdgeMove() const;
 
  protected:
-  void hoverEnterEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
-  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) Q_DECL_OVERRIDE;
+  void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
+  void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
 
  private:
   bool m_mode_edge_move = false;
