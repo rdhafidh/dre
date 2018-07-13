@@ -10,10 +10,27 @@ class SceneView;
 namespace XCommands {
 
 enum class TypeUndoCommandList {
+  MOVE_COMMAND_IS_UNDEFINED,
   MOVE_UNDO_COMMAND = 2,
   MOVE_POS_ONLY_COMMAND,
   INSERT_ITEM_COMMAND,
-  DELETE_ITEM_COMMAND
+  DELETE_ITEM_COMMAND,
+  MOVE_LINE_COMMAND
+};
+
+class MoveLineItemCommand : public QUndoCommand {
+ public:
+  MoveLineItemCommand(ItemShapeBase *item, const QLineF &newLine,
+                      QUndoCommand *parent = Q_NULLPTR);
+  ~MoveLineItemCommand();
+  void undo() Q_DECL_OVERRIDE;
+  void redo() Q_DECL_OVERRIDE;
+  int id() const Q_DECL_OVERRIDE;
+
+ private:
+  QObject *currItem;
+  QLineF oldLine;
+  QLineF newLine;
 };
 
 class MoveItemCommand : public QUndoCommand {
@@ -65,6 +82,7 @@ class InsertItemCommand : public QUndoCommand {
   SceneView *scene;
   QPointF m_TopLeftInit;
 };
+
 class DeleteItemCommand : public QUndoCommand {
  public:
   DeleteItemCommand(BaseAllItems *atItem, QUndoCommand *parent = Q_NULLPTR);

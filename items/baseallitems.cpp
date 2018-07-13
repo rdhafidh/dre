@@ -798,8 +798,21 @@ void BaseAllItems::setModeOnOffSelection(bool b) {
   }
 }
 
-void BaseAllItems::updateHandlePos() { 
-    
+void BaseAllItems::updateHandlePos() {
+  if (getItemType() == ItemConst::Tipe::GARIS && m_h_l_kr.get() != nullptr &&
+      m_h_l_knn.get() != nullptr) {
+    QLineF currLine = property("line").toLineF();
+    if (!currLine.isNull()) {
+      m_h_l_kr->setRect(QRectF(currLine.p1().x() - markerSize,
+                               currLine.p1().y() - markerSize, markerSize * 2,
+                               markerSize * 2));
+
+      m_h_l_knn->setRect(QRectF(currLine.p2().x() - markerSize,
+                                currLine.p2().y() - markerSize, markerSize * 2,
+                                markerSize * 2));
+    }
+    return;
+  }
   if (!smpat || !smpsk || !smpsb || !smpsknn || !smh_a_k || !smh_a_knn ||
       !smh_b_knn || !smh_b_kr)
     return;

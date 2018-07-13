@@ -45,6 +45,8 @@ class LineItem : public BaseAllItems {
   void updateLeftSideLineToMove(const QPointF &to, const QPointF &lastpos);
 
  private:
+  void saveCurrentLinePosStack(const QLineF &newLine);
+
   QColor m_color;
   qreal m_lineWidth;
   QLineF m_currentLine;

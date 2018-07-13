@@ -5,10 +5,10 @@
 #ifdef DEBUGGING_ENABLED
 #include <QDebug>
 #endif
+#include <pageitem.h>
 #include <QGraphicsItem>
 #include <QStringList>
 #include <QVariantList>
-#include <pageitem.h>
 
 XCommands::MoveItemCommand::MoveItemCommand(ItemShapeBase *item,
                                             const QRectF &newRect,
@@ -97,8 +97,9 @@ void XCommands::InsertItemCommand::undo() {
 }
 
 void XCommands::InsertItemCommand::redo() {
-  if (newitem == nullptr && !m_TopLeftInit.isNull ()
-          && qobject_cast<SceneView *>(scene)->pageItemDesign ()->contains (m_TopLeftInit)) {
+  if (newitem == nullptr && !m_TopLeftInit.isNull() &&
+      qobject_cast<SceneView *>(scene)->pageItemDesign()->contains(
+          m_TopLeftInit)) {
     switch (this->m_tipeitem) {
       case ItemConst::Tipe::TEKS:
         newitem = qobject_cast<SceneView *>(scene)->createTextitem(
@@ -150,4 +151,29 @@ void XCommands::DeleteItemCommand::redo() {
 
 int XCommands::DeleteItemCommand::id() const {
   return static_cast<int>(XCommands::TypeUndoCommandList::DELETE_ITEM_COMMAND);
+}
+
+XCommands::MoveLineItemCommand::MoveLineItemCommand(ItemShapeBase *item,
+                                                    const QLineF &newLine,
+                                                    QUndoCommand *parent)
+    : currItem(item), QUndoCommand(parent) {
+  this->newLine = newLine;
+  auto var = currItem->property("line");
+  if (var.isValid() && var.type() == QVariant::LineF) {
+    this->oldLine = var.toLineF();
+  }
+}
+
+XCommands::MoveLineItemCommand::~MoveLineItemCommand() {}
+
+void XCommands::MoveLineItemCommand::undo() {
+  currItem->setProperty("line", oldLine);
+}
+
+void XCommands::MoveLineItemCommand::redo() {
+  currItem->setProperty("line", newLine);
+}
+
+int XCommands::MoveLineItemCommand::id() const {
+  return static_cast<int>(XCommands::TypeUndoCommandList::MOVE_LINE_COMMAND);
 }

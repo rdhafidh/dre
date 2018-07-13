@@ -1,4 +1,6 @@
 #include "lineitem.h"
+#include <sceneview.h>
+#include <undocommand.h>
 #include <QAction>
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
@@ -88,11 +90,20 @@ void LineItem::createContextMenu(QGraphicsSceneContextMenuEvent *event) {
 void LineItem::updateRightSideLineToMove(const QPointF &to,
                                          const QPointF &lastpos) {
   Q_UNUSED(lastpos)
-  drawLine(QLineF(m_currentLine.p1(), to));
+  auto nl = QLineF(m_currentLine.p1(), to);
+  this->saveCurrentLinePosStack(nl);
+  drawLine(nl);
 }
 
 void LineItem::updateLeftSideLineToMove(const QPointF &to,
                                         const QPointF &lastpos) {
   Q_UNUSED(lastpos)
-  drawLine(QLineF(to, m_currentLine.p2()));
+  auto nl = QLineF(to, m_currentLine.p2());
+  this->saveCurrentLinePosStack(nl);
+  drawLine(nl);
+}
+
+void LineItem::saveCurrentLinePosStack(const QLineF &newLine) {
+  SceneView *scn = qobject_cast<SceneView *>(this->scene());
+  scn->undostack()->push(new XCommands::MoveLineItemCommand(this, newLine));
 }
