@@ -121,6 +121,9 @@ void XCommands::InsertItemCommand::redo() {
             QPointF(40, 60), QSizeF(90, 100));
         newitem->setPos(m_TopLeftInit);
         break;
+    case ItemConst::Tipe::BULAT:
+        newitem=qobject_cast<SceneView*>(scene)->createEllipseItem(QPointF(50,30),QSizeF(50,90));
+        newitem->setPos (m_TopLeftInit);
       default:
         break;
     }

@@ -9,8 +9,8 @@
 #ifdef DEBUGGING_ENABLED
 #include <QDebug>
 #endif
-#include "ui_mainwindow.h"
 #include <pageitem.h>
+#include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
@@ -112,7 +112,9 @@ void MainWindow::privAddShapeTriangle() {
   createItemBase(ItemConst::Tipe::SEGITIGA);
 }
 
-void MainWindow::privAddShapeEllipse() {}
+void MainWindow::privAddShapeEllipse() {
+  createItemBase(ItemConst::Tipe::BULAT);
+}
 
 void MainWindow::privAddShapeRectangle() {}
 
@@ -124,7 +126,7 @@ void MainWindow::createItemBase(const ItemConst::Tipe &ty) {
   if (page == nullptr) return;
 
   m_currentInsertItemType = ty;
-  page->getScene ()->pageItemDesign ()->setInsertItemMode(true);
+  page->getScene()->pageItemDesign()->setInsertItemMode(true);
 }
 
 void MainWindow::privExit() { close(); }

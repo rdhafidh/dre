@@ -6,6 +6,7 @@
 #include <items/lineitem.h>
 #include <items/textitem.h>
 #include <items/triangleitem.h>
+#include <items/ellipseitem.h>
 #include <pageitem.h>
 #include <ruleritem.h>
 #ifdef DEBUGGING_ENABLED
@@ -113,7 +114,21 @@ BaseAllItems *SceneView::createShapeRectangleitem(const QPointF &topleft,
                                                   const QSizeF &size) {
   Q_UNUSED(topleft)
   Q_UNUSED(size)
-  return nullptr;
+    return nullptr;
+}
+
+BaseAllItems *SceneView::createEllipseItem(const QPointF &topleft, const QSizeF &size)
+{
+    EllipseItem *el=new EllipseItem;
+    el->setParent(pageitemdsgn);
+    el->setParentItem(pageitemdsgn);
+    el->setRect(QRectF(topleft, size));
+    connect(el, &EllipseItem::emitRefreshItemProperty, m_pagedesign,
+            &FormDesign::handleItemPropertyUpdate);
+    connect(el, &EllipseItem::forceThisItemSelected, this,
+            &SceneView::updateForceThatItemSelected);
+    m_items << el;
+    return (BaseAllItems *)el;
 }
 
 QUndoStack *SceneView::undostack() { return &m_undostack; }

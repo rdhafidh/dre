@@ -44,7 +44,8 @@ SOURCES += main.cpp\
     items/handlerpointerruler.cpp \
     items/lineitem.cpp \
     items/selectionlineitemhandler.cpp \
-    items/triangleitem.cpp
+    items/triangleitem.cpp \
+    items/ellipseitem.cpp
 
 HEADERS  += mainwindow.h \
     tabwidgetutama.h \
@@ -64,7 +65,8 @@ HEADERS  += mainwindow.h \
     items/handlerpointerruler.h \
     items/lineitem.h \
     items/selectionlineitemhandler.h \
-    items/triangleitem.h
+    items/triangleitem.h \
+    items/ellipseitem.h
 
 FORMS    += mainwindow.ui \
     delegates/propertyeditor/imagefilesetpropertyeditor.ui \

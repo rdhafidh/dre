@@ -7,38 +7,22 @@
 #include <QPolygonF>
 
 TriangleItem::TriangleItem(QGraphicsItem *parent)
-    : BaseAllItems(parent), m_lineColor(QColor("black")), m_lineWidth(1.5) {
+    : BaseAllItems(parent)  {
   setItemType(ItemConst::Tipe::SEGITIGA);
-  setProperty("borderLine", BORDER_KOSONG);
+  setProperty("borderLine", BORDER_KOSONG); 
+  setProperty ("lineColor",QColor("black"));
+  setProperty ("lineWidth",1.5f);
+  setProperty ("fillColorShape",QColor("white"));
 }
 
 TriangleItem::~TriangleItem() {}
-
-void TriangleItem::setLineWidth(qreal w) {
-  if (m_lineWidth == w) {
-    return;
-  }
-  m_lineWidth = w;
-  update();
-}
-
-qreal TriangleItem::getLineWidth() const { return m_lineWidth; }
-
-void TriangleItem::setLineColor(const QColor &color) {
-  if (m_lineColor == color) {
-    return;
-  }
-  m_lineColor = color;
-  update();
-}
-
-QColor TriangleItem::getLineColor() const { return m_lineColor; }
-
+ 
 void TriangleItem::paint(QPainter *painter,
                          const QStyleOptionGraphicsItem *option,
                          QWidget *widget) {
   painter->save();
   auto path = shape();
+  painter->setBrush (QBrush(this->getFillColorShape ()));
   painter->drawPath(path);
   painter->restore();
   BaseAllItems::paint(painter, option, widget);
@@ -46,8 +30,8 @@ void TriangleItem::paint(QPainter *painter,
 
 QPainterPath TriangleItem::shape() const {
   QPen pen;
-  pen.setBrush(QBrush(m_lineColor));
-  pen.setWidthF(m_lineWidth);
+  pen.setBrush(QBrush(this->getLineColor ()));
+  pen.setWidthF(this->getLineWidth ());
   QPainterPathStroker stroke(pen);
   QPainterPath path;
   QPolygonF lines;

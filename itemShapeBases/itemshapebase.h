@@ -2,23 +2,8 @@
 #define ITEMSHAPEBASE_H
 #include <QObject>
 #include <QPainter> 
-#include <constvalue.h>
-namespace QQuickItem {
-class ItemChangeData;
-}
-enum class ItemShapeChangeDecision {
-  ITEM_DATA_IS_UNDEFINED = 2,
-  ITEM_DATA_IS_FROM_QML = 4,
-  ITEM_DATA_IS_FROM_GRAPHICSITEM=8
-};
-struct ItemShapeChangeValue {
-  QQuickItem::ItemChangeData *data_qml_change;
-  QVariant data_graphicsitem_change;
-  ItemShapeChangeDecision decison_data;
-};
-ItemShapeChangeValue makeItemShapeChangeDecisionValue(
-    const ItemShapeChangeDecision &decision,
-    QQuickItem::ItemChangeData *fromqml, const QVariant &fromgraphicsitem); 
+#include <constvalue.h> 
+
 class BaseAllItems; 
 class  ItemShapeBase : public QObject {
   Q_OBJECT
@@ -27,6 +12,12 @@ class  ItemShapeBase : public QObject {
     Q_PROPERTY(qreal borderLineWidth READ borderLineWidth WRITE setBorderLineWidth DESIGNABLE true  )
     Q_PROPERTY(QColor borderColor READ borderColor WRITE setBorderColor )
     Q_PROPERTY(bool visibleItem READ visibleItem WRITE setVisibleItem ) 
+    Q_PROPERTY(qreal lineWidth READ getLineWidth WRITE setLineWidth NOTIFY
+                   lineWidthChanged)
+    Q_PROPERTY(QColor lineColor READ getLineColor WRITE setLineColor NOTIFY
+                   lineColorChanged) 
+    Q_PROPERTY(QColor fillColorShape READ getFillColorShape WRITE
+                   setFillColorShape NOTIFY fillColorShapeChanged)
  public: 
     friend class BaseAllItems; 
   explicit ItemShapeBase(QObject *parent = 0);
@@ -55,22 +46,33 @@ class  ItemShapeBase : public QObject {
    void setVisibleItem(bool n);
    
   void setRect(const QRectF &r);
-  QRectF rect() const;
-  /*
-   * Generated qml api dari html5 canvas api
-   * */
-  QString generateSceneItem() const;
-  QString generateFuncDefs()const;
+  QRectF rect() const; 
+  
   void setItemType(const ItemConst::Tipe &tipe);
   ItemConst::Tipe getItemType() const;
   
   bool isInUndoStack()const;
   void setInUndoStack(bool e);
   
+  void setLineWidth(qreal w);
+  qreal getLineWidth() const;
+
+  void setLineColor(const QColor &color);
+  QColor getLineColor() const;
+
+  void setFillColorShape(const QColor &color);
+  QColor getFillColorShape() const;
+ 
+  
 Q_SIGNALS:
   void askUpdate(); 
   void rectChanged(const QRectF & r); 
- protected:
+  
+  void lineWidthChanged(qreal w);
+  void lineColorChanged(const QColor &warna);
+  void fillColorShapeChanged(const QColor &warna);
+ 
+protected:
   /*
    * ketika paint
    * */
@@ -84,15 +86,18 @@ Q_SIGNALS:
   void drawSingleItemRightLine(QPainter *painter, QRectF rect);
   void drawSingleItemLeftLine(QPainter *painter, QRectF rect);
   QPen borderPen()const;
+  
   bool m_isindostack;
   ItemShapeBase::BorderLineFlags m_borderflag;
   QRectF localrect;
   qreal m_borderwidth;
   QColor m_bordercolor;
   bool m_visible;
-  ItemConst::Tipe m_tipeitem;
-  QString m_itemstr;
-  QString m_funcdef;
+  ItemConst::Tipe m_tipeitem; 
+  
+  QColor m_lineColor;
+  qreal m_lineWidth;
+  QColor m_fillColor;
 };
 
 #endif  // ITEMSHAPEBASE_H

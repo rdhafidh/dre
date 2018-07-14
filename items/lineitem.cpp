@@ -5,14 +5,17 @@
 #include <QGraphicsSceneContextMenuEvent>
 #include <QMenu>
 
-LineItem::LineItem(QGraphicsItem *parent) : BaseAllItems(parent) {
+LineItem::LineItem(QGraphicsItem *parent)
+    : BaseAllItems(parent)  {
   setItemType(ItemConst::Tipe::GARIS);
-  m_color = QColor("black");
-  m_lineWidth = 3.0;
   connect(this, SIGNAL(askThisLineRightSideToMove(QPointF, QPointF)), this,
           SLOT(updateRightSideLineToMove(QPointF, QPointF)));
   connect(this, SIGNAL(askThisLineLeftSideToMove(QPointF, QPointF)), this,
-          SLOT(updateLeftSideLineToMove(QPointF, QPointF)));
+          SLOT(updateLeftSideLineToMove(QPointF, QPointF))); 
+  setProperty("borderLine", BORDER_KOSONG);
+  setProperty("fillColorShape", QColor("black"));
+  setProperty ("lineColor",QColor("black"));
+  setProperty ("lineWidth",1.5f);
 }
 
 LineItem::~LineItem() {}
@@ -29,33 +32,11 @@ void LineItem::drawLine(const QLineF &line) {
 
 QLineF LineItem::getLine() const { return m_currentLine; }
 
-void LineItem::setLineWidth(qreal w) {
-  if (m_lineWidth == w) {
-    return;
-  }
-  m_lineWidth = w;
-  this->lineWidthChanged(m_lineWidth);
-  update();
-}
-
-qreal LineItem::getLineWidth() const { return m_lineWidth; }
-
-void LineItem::setLineColor(const QColor &color) {
-  if (m_color == color) {
-    return;
-  }
-  m_color = color;
-  this->lineColorChanged(m_color);
-  update();
-}
-
-QColor LineItem::getLineColor() const { return m_color; }
-
 void LineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
                      QWidget *widget) {
   painter->save();
   auto path = shape();
-  painter->setBrush(QBrush(m_color));
+  painter->setBrush(QBrush(this->getFillColorShape()));
   painter->drawPath(path);
   painter->restore();
   BaseAllItems::paint(painter, option, widget);
@@ -63,8 +44,8 @@ void LineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
 
 QPainterPath LineItem::shape() const {
   QPen pen;
-  pen.setColor(m_color);
-  pen.setWidthF(m_lineWidth);
+  pen.setColor(this->getLineColor());
+  pen.setWidthF(this->getLineWidth());
   QPainterPathStroker stroke(pen);
   QPainterPath path;
   path.moveTo(m_currentLine.p1());

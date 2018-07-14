@@ -10,9 +10,7 @@ ItemShapeBase::ItemShapeBase(QObject *parent) : QObject(parent) {
   localrect = QRectF(0, 0, 0, 0);
   m_bordercolor = QColor(Qt::black);
   m_visible = true;
-  m_tipeitem = ItemConst::Tipe::KOTAK;
-  m_itemstr = "";
-  m_funcdef = "";
+  m_tipeitem = ItemConst::Tipe::KOTAK; 
 }
 
 ItemShapeBase::~ItemShapeBase() {}
@@ -65,11 +63,7 @@ void ItemShapeBase::setRect(const QRectF &r) {
 }
 
 QRectF ItemShapeBase::rect() const { return localrect; }
-
-QString ItemShapeBase::generateSceneItem() const { return m_itemstr; }
-
-QString ItemShapeBase::generateFuncDefs() const { return m_funcdef; }
-
+ 
 void ItemShapeBase::setItemType(const ItemConst::Tipe &tipe) {
   if (m_tipeitem == tipe) return;
 
@@ -81,6 +75,48 @@ ItemConst::Tipe ItemShapeBase::getItemType() const { return m_tipeitem; }
 bool ItemShapeBase::isInUndoStack() const { return m_isindostack; }
 
 void ItemShapeBase::setInUndoStack(bool e) { m_isindostack = e; }
+
+void ItemShapeBase::setLineWidth(qreal w)
+{
+    if(this->m_lineWidth==w){
+        return;
+    }
+    this->m_lineWidth=w;
+    this->askUpdate ();
+}
+
+qreal ItemShapeBase::getLineWidth() const
+{
+    return m_lineWidth;
+}
+
+void ItemShapeBase::setLineColor(const QColor &color)
+{
+    if(this->m_lineColor==color){
+        return;
+    }
+    m_lineColor=color;
+    this->askUpdate ();
+}
+
+QColor ItemShapeBase::getLineColor() const
+{
+    return m_lineColor;
+}
+
+void ItemShapeBase::setFillColorShape(const QColor &color)
+{
+    if(this->m_fillColor==color){
+        return;
+    }
+    m_fillColor=color;
+    this->askUpdate ();
+}
+
+QColor ItemShapeBase::getFillColorShape() const
+{
+    return m_fillColor;
+}
 
 void ItemShapeBase::paintShape(QPainter *painter) {
   if (painter != nullptr && m_visible) {
@@ -141,14 +177,4 @@ QPen ItemShapeBase::borderPen() const {
   pen.setWidth(m_borderwidth);
   pen.setStyle(Qt::SolidLine);
   return pen;
-}
-
-ItemShapeChangeValue makeItemShapeChangeDecisionValue(
-    const ItemShapeChangeDecision &decision,
-    QQuickItem::ItemChangeData *fromqml, const QVariant &fromgraphicsitem) {
-  ItemShapeChangeValue value;
-  value.decison_data = decision;
-  value.data_qml_change = fromqml;
-  value.data_graphicsitem_change = fromgraphicsitem;
-  return value;
-}
+} 
