@@ -21,7 +21,7 @@ enum class TypeUndoCommandList {
 class MoveLineItemCommand : public QUndoCommand {
  public:
   MoveLineItemCommand(ItemShapeBase *item, const QLineF &newLine,
-                      QUndoCommand *parent = Q_NULLPTR);
+                      QUndoCommand *parent = nullptr);
   ~MoveLineItemCommand();
   void undo() override;
   void redo() override;
@@ -36,7 +36,7 @@ class MoveLineItemCommand : public QUndoCommand {
 class MoveItemCommand : public QUndoCommand {
  public:
   MoveItemCommand(ItemShapeBase *item, const QRectF &newRect,
-                  QUndoCommand *parent = Q_NULLPTR);
+                  QUndoCommand *parent = nullptr);
   void undo() override;
   void redo() override;
   int id() const override;
@@ -50,7 +50,7 @@ class MoveItemCommand : public QUndoCommand {
 class MoveItemPosOnlyCommand : public QUndoCommand {
  public:
   MoveItemPosOnlyCommand(QGraphicsItem *item, const QPointF &newPos,
-                         QUndoCommand *parent = Q_NULLPTR);
+                         QUndoCommand *parent = nullptr);
   void undo() override;
   void redo() override;
   int id() const override;
@@ -70,7 +70,7 @@ class InsertItemCommand : public QUndoCommand {
    * */
   InsertItemCommand(SceneView *fromscene, const QPointF &point,
                     const ItemConst::Tipe &type,
-                    QUndoCommand *parent = Q_NULLPTR);
+                    QUndoCommand *parent = nullptr);
 
   void undo() override;
   void redo() override;
@@ -85,7 +85,7 @@ class InsertItemCommand : public QUndoCommand {
 
 class DeleteItemCommand : public QUndoCommand {
  public:
-  DeleteItemCommand(BaseAllItems *atItem, QUndoCommand *parent = Q_NULLPTR);
+  DeleteItemCommand(BaseAllItems *atItem, QUndoCommand *parent = nullptr);
 
   void undo() override;
   void redo() override;

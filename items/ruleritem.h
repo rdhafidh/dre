@@ -26,7 +26,7 @@ signals:
 public slots:
     
 protected:
-    void paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *widget = Q_NULLPTR) override;
+    void paint(QPainter *p, const QStyleOptionGraphicsItem *option, QWidget *widget = nullptr) override;
     QRectF boundingRect ()const override;
     QPainterPath shape() const override;
     virtual void	contextMenuEvent(QGraphicsSceneContextMenuEvent *event)

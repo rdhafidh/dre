@@ -34,7 +34,7 @@ class PageItem : public QGraphicsObject {
 
  protected:
   void paint(QPainter *painter, const QStyleOptionGraphicsItem *option,
-             QWidget *widget = Q_NULLPTR) override;
+             QWidget *widget = nullptr) override;
   QRectF boundingRect() const override;
   QPainterPath shape() const override;
   void mousePressEvent(QGraphicsSceneMouseEvent *event) override;

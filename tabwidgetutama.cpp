@@ -18,7 +18,7 @@ void TabWidgetUtama::emitclosetab(int idx) {
 #endif
   auto curWidget = widget(idx);
 
-  if (curWidget != Q_NULLPTR) {
+  if (curWidget != nullptr) {
     curWidget->disconnect();
     delete curWidget;
     curWidget = nullptr;
