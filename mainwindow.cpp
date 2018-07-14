@@ -116,7 +116,9 @@ void MainWindow::privAddShapeEllipse() {
   createItemBase(ItemConst::Tipe::BULAT);
 }
 
-void MainWindow::privAddShapeRectangle() {}
+void MainWindow::privAddShapeRectangle() {
+  createItemBase(ItemConst::Tipe::KOTAK);
+}
 
 void MainWindow::createItemBase(const ItemConst::Tipe &ty) {
   auto widget = ui->tabWidget->currentWidget();

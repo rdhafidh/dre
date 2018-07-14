@@ -125,6 +125,9 @@ void XCommands::InsertItemCommand::redo() {
         newitem=qobject_cast<SceneView*>(scene)->createEllipseItem(QPointF(50,30),QSizeF(50,90));
         newitem->setPos (m_TopLeftInit);
       default:
+    case ItemConst::Tipe::KOTAK:
+        newitem=qobject_cast<SceneView*>(scene)->createRectangleItem(QPointF(50,30),QSizeF(90,80));
+        newitem->setPos (m_TopLeftInit);
         break;
     }
     return;

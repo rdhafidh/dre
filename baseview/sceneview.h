@@ -32,6 +32,7 @@ class SceneView : public QGraphicsScene {
   BaseAllItems *createShapeRectangleitem(const QPointF &topleft,
                                          const QSizeF &size);
   BaseAllItems *createEllipseItem(const QPointF &topleft,const QSizeF &size);
+  BaseAllItems *createRectangleItem(const QPointF &topleft,const QSizeF &size);
 
   QUndoStack *undostack();
   RulerItem *rulerAtas();
