@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormDesign</class>
+ <widget class="QWidget" name="FormDesign">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>647</width>
+    <height>467</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="0" column="0">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QDockWidget" name="dockWidget">
+       <property name="minimumSize">
+        <size>
+         <width>117</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>180</width>
+         <height>524287</height>
+        </size>
+       </property>
+       <property name="features">
+        <set>QDockWidget::NoDockWidgetFeatures</set>
+       </property>
+       <property name="windowTitle">
+        <string>Daftar Objek</string>
+       </property>
+       <widget class="QWidget" name="dockWidgetContents">
+        <layout class="QGridLayout" name="gridLayout_4">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QTreeView" name="treeView_list_obj"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+     <item row="0" column="1" rowspan="2">
+      <widget class="Baseview" name="graphicsView"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QDockWidget" name="dockWidget_2">
+       <property name="minimumSize">
+        <size>
+         <width>79</width>
+         <height>200</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>180</width>
+         <height>524287</height>
+        </size>
+       </property>
+       <property name="features">
+        <set>QDockWidget::NoDockWidgetFeatures</set>
+       </property>
+       <property name="windowTitle">
+        <string>Item Properties</string>
+       </property>
+       <widget class="QWidget" name="dockWidgetContents_5">
+        <layout class="QGridLayout" name="gridLayout_6">
+         <item row="0" column="0">
+          <layout class="QGridLayout" name="gridLayout_5">
+           <item row="0" column="0">
+            <widget class="QTreeView" name="treeView_prop_item"/>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Baseview</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">baseview.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

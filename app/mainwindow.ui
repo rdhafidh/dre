@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>763</width>
+    <height>651</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
+       <widget class="TabWidgetUtama" name="tabWidget">
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+        <property name="documentMode">
+         <bool>true</bool>
+        </property>
+        <property name="tabsClosable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>763</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuTutup_Lembar">
+     <property name="title">
+      <string>Tutup Lembar</string>
+     </property>
+     <addaction name="actionTutupLembar_Aktif"/>
+     <addaction name="actionTutupSemua_Lembar"/>
+    </widget>
+    <addaction name="actionHalaman_Baru"/>
+    <addaction name="actionBuka_lembar"/>
+    <addaction name="menuTutup_Lembar"/>
+    <addaction name="actionPrintPreview"/>
+    <addaction name="actionPengaturan"/>
+    <addaction name="actionTutup_Aplikasi"/>
+   </widget>
+   <widget class="QMenu" name="menuEdit">
+    <property name="title">
+     <string>Edit</string>
+    </property>
+    <addaction name="actionDelete"/>
+    <addaction name="actionKopi"/>
+    <addaction name="actionPaste"/>
+   </widget>
+   <widget class="QMenu" name="menuItem">
+    <property name="title">
+     <string>Item</string>
+    </property>
+    <widget class="QMenu" name="menuTambah_Shape">
+     <property name="title">
+      <string>Tambah Shape</string>
+     </property>
+     <addaction name="actionTambahLine"/>
+     <addaction name="actionTambahSegitiga"/>
+     <addaction name="actionTambahBulat"/>
+     <addaction name="actionTambahKotak"/>
+    </widget>
+    <addaction name="actionTambah_teks"/>
+    <addaction name="actionTambah_Gambar"/>
+    <addaction name="menuTambah_Shape"/>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuEdit"/>
+   <addaction name="menuItem"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionPaste">
+   <property name="text">
+    <string>Paste</string>
+   </property>
+  </action>
+  <action name="actionDelete">
+   <property name="text">
+    <string>Delete</string>
+   </property>
+  </action>
+  <action name="actionKopi">
+   <property name="text">
+    <string>Kopi</string>
+   </property>
+  </action>
+  <action name="actionHalaman_Baru">
+   <property name="text">
+    <string>Lembar Baru</string>
+   </property>
+  </action>
+  <action name="actionBuka_lembar">
+   <property name="text">
+    <string>Buka lembar</string>
+   </property>
+  </action>
+  <action name="actionTutupLembar_Aktif">
+   <property name="text">
+    <string>Lembar Aktif</string>
+   </property>
+  </action>
+  <action name="actionTutupSemua_Lembar">
+   <property name="text">
+    <string>Semua Lembar</string>
+   </property>
+  </action>
+  <action name="actionPrintPreview">
+   <property name="text">
+    <string>Print Preview</string>
+   </property>
+  </action>
+  <action name="actionPengaturan">
+   <property name="text">
+    <string>Pengaturan</string>
+   </property>
+  </action>
+  <action name="actionTutup_Aplikasi">
+   <property name="text">
+    <string>Tutup Aplikasi</string>
+   </property>
+  </action>
+  <action name="actionTambah_teks">
+   <property name="text">
+    <string>Tambah teks</string>
+   </property>
+  </action>
+  <action name="actionTambah_Gambar">
+   <property name="text">
+    <string>Tambah Gambar</string>
+   </property>
+  </action>
+  <action name="actionTambahLine">
+   <property name="text">
+    <string>Line</string>
+   </property>
+  </action>
+  <action name="actionTambahSegitiga">
+   <property name="text">
+    <string>Segitiga</string>
+   </property>
+  </action>
+  <action name="actionTambahBulat">
+   <property name="text">
+    <string>Bulat</string>
+   </property>
+  </action>
+  <action name="actionTambahKotak">
+   <property name="text">
+    <string>Kotak</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>TabWidgetUtama</class>
+   <extends>QTabWidget</extends>
+   <header location="global">tabwidgetutama.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
