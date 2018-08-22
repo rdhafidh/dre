@@ -1,0 +1,10 @@
+namespace org.ClientCommand;
+
+table ClientFetch{
+	id: int;
+	nama: string;
+	disetkah: bool;
+	numbers: [int]; 
+}
+
+root_type ClientFetch;

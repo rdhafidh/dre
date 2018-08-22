@@ -1,0 +1,10 @@
+namespace Coba;
+
+table FooBar{
+	id: int;
+	nama: string;
+	disetkah: bool;
+	numbers: [int]; 
+}
+
+root_type FooBar;

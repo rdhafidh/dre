@@ -1,9 +1,0 @@
-BUILD_DIR = $$PWD/build/app
-DEST_BINS = $${BUILD_DIR}/bin
-DESTDIR = $$PWD/build
-MOC_DIR        = $${BUILD_DIR}/moc
-UI_DIR         = $${BUILD_DIR}/ui
-UI_HEADERS_DIR = $${BUILD_DIR}/ui
-UI_SOURCES_DIR = $${BUILD_DIR}/ui
-OBJECTS_DIR    = $${BUILD_DIR}/obj
-RCC_DIR        = $${BUILD_DIR}/rcc
