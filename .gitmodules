@@ -1,0 +1,3 @@
+[submodule "thirdparty/skdeps"]
+	path = thirdparty/skdeps
+	url = https://github.com/rdhafidh/skdeps.git
