@@ -2,3 +2,7 @@
 	path = thirdparty/skdeps
 	url = https://github.com/rdhafidh/skdeps.git
 	branch = master
+[submodule "thirdparty/chromium_deps_fetcher"]
+	path = thirdparty/chromium_deps_fetcher
+	url = https://github.com/rdhafidh/chromium_deps_fetcher.git
+	branch = master

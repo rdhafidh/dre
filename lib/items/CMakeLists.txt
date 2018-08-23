@@ -33,7 +33,7 @@ set(ITEM_SRC
     baseskitem.h
     )   
  
-include_directories ( ../../app/baseview ../../app )
+include_directories ( ../../app/baseview ../../app ../../thirdparty/skdeps/skia/include )
 add_library(items STATIC ${ITEM_SRC})
 
 target_compile_features(items PUBLIC cxx_std_11)
