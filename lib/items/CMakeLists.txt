@@ -29,6 +29,8 @@ set(ITEM_SRC
     selectionmarkerhandlebase.h
     textitem.h
     triangleitem.h
+    baseskitem.cpp
+    baseskitem.h
     )   
  
 include_directories ( ../../app/baseview ../../app )
